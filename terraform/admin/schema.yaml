@@ -1,0 +1,10 @@
+title: "OCI Quest Environment Stack"
+description: "受講者環境構築用のスタックです。"
+schemaVersion: 1.1.0
+version: "20190304"
+
+variables:
+  # Terraform Provider Variables
+  members_file:
+    type: file
+    description: "メンバー情報ファイル"

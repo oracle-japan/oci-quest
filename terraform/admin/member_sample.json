@@ -1,0 +1,21 @@
+{
+  "teams": [
+    {
+      "name": "Team_Alpha",
+      "description": "Team Alpha",
+      "members": [
+        "taro.yamada@example.com",
+        "jiro.yamada@example.com",
+        "daybreaks.link@gmail.com"
+      ]
+    },
+    {
+      "name": "Team_Beta",
+      "description": "Team Beta",
+      "members": [
+          "saburo.sato@example.com",
+          "shiro.sato@example.com"
+      ]
+    }
+  ]
+}
