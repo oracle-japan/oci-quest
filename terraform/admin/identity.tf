@@ -69,3 +69,18 @@ resource "oci_identity_policy" "team_access" {
     "Allow group ${each.key} to manage all-resources in compartment ${oci_identity_compartment.teams[each.key].id}"
   ]
 }
+
+# コンパートメント作成直後にはポリシーを作成できないので、待つ必要がある
+resource "null_resource" "wait_for_compartments" {
+  triggers = {
+    always_run = timestamp()
+  }
+
+  provisioner "local-exec" {
+    command = "sleep 20"  # 20秒待機
+  }
+
+  depends_on = [
+    oci_identity_compartment.teams
+  ]
+}
