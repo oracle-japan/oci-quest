@@ -92,7 +92,7 @@ After complete the Build steps 1 and 2, generate the binaries:
 1. From the root of the repo execute the command:
 
    ```shell
-   docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic.tar.xz /transfer/deploy/basic/terraform/scripts/mushop-basic.tar.xz
+   docker run -v $PWD:/transfer --rm --entrypoint cp mushop-basic:latest /package/mushop-basic.tar.xz /transfer/deploy/basic/terraform/quest/scripts/mushop-basic.tar.xz
    ```
 
 1. Copy mushop media images to populate the object storage:

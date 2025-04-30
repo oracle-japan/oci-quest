@@ -25,12 +25,12 @@ jobs:
           docker run \
             -v $PWD:/transfer \
             --rm \
-            --entrypoint cp mushop-basic:latest /package/mushop-basic.tar.xz /transfer/terraform/scripts/mushop-basic.tar.xz
+            --entrypoint cp mushop-basic:latest /package/mushop-basic.tar.xz /transfer/terraform/quest/scripts/mushop-basic.tar.xz
       - name: Publish Artifact
         uses: actions/upload-artifact@v4
         with:
           name: mushop-basic.tar.xz
-          path: terraform/scripts/mushop-basic.tar.xz
+          path: terraform/quest/scripts/mushop-basic.tar.xz
   tag_and_release_note:
     needs: [build_and_publish_artifact]
     uses: ./.github/workflows/tag_and_release_note.yaml

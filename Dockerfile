@@ -179,8 +179,8 @@ RUN yum clean metadata && \
   yum clean all && \
   rm -rf /var/cache/yum
 
-COPY terraform/scripts/httpd.conf /etc/httpd/conf/
-COPY terraform/scripts/docker_entrypoint.sh /
+COPY terraform/quest/scripts/httpd.conf /etc/httpd/conf/
+COPY terraform/quest/scripts/docker_entrypoint.sh /
 RUN chmod +x /docker_entrypoint.sh
 
 WORKDIR /
@@ -201,11 +201,11 @@ RUN mkdir /package && tar cv /app | xz -3e > /package/mushop-basic.tar.xz
 
 # Create ORM package
 WORKDIR /basic
-COPY terraform/VERSION /basic/
-COPY terraform/*.tf /basic/
-COPY terraform/*.tfvars.example /basic/
-COPY terraform/schema.yaml /basic/
-COPY terraform/scripts /basic/scripts
+COPY terraform/quest/VERSION /basic/
+COPY terraform/quest/*.tf /basic/
+COPY terraform/quest/*.tfvars.example /basic/
+COPY terraform/quest/schema.yaml /basic/
+COPY terraform/quest/scripts /basic/scripts
 COPY src/catalogue/dbdata/atp_mushop_catalogue.sql /basic/scripts/
 COPY --from=assets-builder /app/assets/dist/ /basic/images/
 RUN cp /package/mushop-basic.tar.xz /basic/scripts/
