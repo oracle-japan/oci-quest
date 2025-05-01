@@ -90,6 +90,15 @@ resource "oci_core_instance" "mushop_bastion" {
   metadata = {
     ssh_authorized_keys = var.public_key
   }
+  # OCI Quest 設問 : コンピュート・インスタンスのメトリック情報が確認できない のためにOracle Cloud Agentのモニタリング・プラグインを有効化 by mmarukaw
+  agent_config
+    are_all_plugins_disabled = false
+    is_monitoring_disabled = false
+    plugins_config {
+      desired_state = "ENABLED"
+      name = "Compute Instance Monitoring"
+    }
+  }
 }
 
 resource "oci_core_instance" "mushop_app_instance" {
@@ -114,5 +123,14 @@ resource "oci_core_instance" "mushop_app_instance" {
   metadata = {
     ssh_authorized_keys = var.public_key
     user_data           = data.cloudinit_config.mushop.rendered
+  }
+  # OCI Quest 設問 : コンピュート・インスタンスのメトリック情報が確認できない のためにOracle Cloud Agentのモニタリング・プラグインを無効化 by mmarukaw
+  agent_config
+    are_all_plugins_disabled = false
+    is_monitoring_disabled = false
+    plugins_config {
+      desired_state = "DISABLED"
+      name = "Compute Instance Monitoring"
+    }
   }
 }
