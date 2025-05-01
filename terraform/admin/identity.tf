@@ -66,7 +66,9 @@ resource "oci_identity_policy" "team_access" {
   compartment_id = var.tenancy_ocid  
 
   statements = [
-    "Allow group ${each.key} to manage all-resources in compartment ${oci_identity_compartment.teams[each.key].id}"
+    "Allow group ${each.key} to manage all-resources in compartment ${oci_identity_compartment.teams[each.key].id}",
+    "Allow service dpd to manage objects in compartment ${oci_identity_compartment.teams[each.key].id}",
+    "Allow service dpd to read secret-family in compartment ${oci_identity_compartment.teams[each.key].id}"
   ]
 }
 
