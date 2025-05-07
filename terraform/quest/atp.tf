@@ -35,12 +35,12 @@ resource "oci_database_management_autonomous_database_autonomous_database_dbm_fe
       connection_credentials {
 
         #Optional
-        credential_name    = "mushop-atp-dbm-credential"
+        credential_name    = "mushop_atp_dbm_credential"
         credential_type    = "SECRET"
         password_secret_id = oci_vault_secret.mushop_atp_admin_password.id
         role               = "ADMIN"
         #ssl_secret_id      = oci_vault_secret.test_secret.id
-        user_name = oci_identity_user.test_user.name
+        user_name = "ADMIN"
       }
       connection_string {
 
@@ -55,7 +55,7 @@ resource "oci_database_management_autonomous_database_autonomous_database_dbm_fe
 
       #Optional
       connector_type       = "PE"
-      private_end_point_id = oci_database_management_private_end_point.mushop_dbm_private_endpoint.id
+      private_end_point_id = oci_database_management_db_management_private_endpoint.mushop_dbm_private_endpoint.id
     }
   }
 }
@@ -63,7 +63,7 @@ resource "oci_database_management_autonomous_database_autonomous_database_dbm_fe
 resource "oci_database_management_db_management_private_endpoint" "mushop_dbm_private_endpoint" {
   #Required
   compartment_id = var.compartment_ocid
-  name           = "DBM-Private-Endpoint"
+  name           = "dbm_private_endpoint"
   subnet_id      = oci_core_subnet.mushop_db_subnet.id
 }
 
@@ -71,7 +71,7 @@ resource "oci_database_management_db_management_private_endpoint" "mushop_dbm_pr
 
 resource "oci_vault_secret" "mushop_atp_admin_password" {
   compartment_id = var.compartment_ocid
-  secret_name    = "atp-admin-password"
+  secret_name    = "atp_admin_password"
   vault_id       = oci_kms_vault.mushop_vault.id
   key_id         = oci_kms_key.mushop_key.id
 
