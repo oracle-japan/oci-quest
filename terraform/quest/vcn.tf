@@ -62,6 +62,8 @@ resource "oci_core_route_table" "mushop_private_route_table" {
   compartment_id = var.compartment_ocid
   vcn_id         = oci_core_vcn.mushop_vcn.id
   display_name   = format("%s-mushop-private-route-table", var.team_name)
+  # OCI Quest 設問 : コンピュート・インスタンスのメトリック情報が確認できない : サービス・ゲートウェイへのルート・ルールを削除 by Masataka Marukawa
+  /*
   route_rules {
     destination       = local.all_services.cidr_block
     destination_type  = "SERVICE_CIDR_BLOCK"
@@ -72,6 +74,7 @@ resource "oci_core_route_table" "mushop_private_route_table" {
     destination_type  = "CIDR_BLOCK"
     network_entity_id = oci_core_nat_gateway.mushop_nat_gateway.id
   }
+  */
   depends_on = [oci_core_vcn.mushop_vcn]
 }
 
