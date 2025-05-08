@@ -9,6 +9,11 @@ resource "oci_database_autonomous_database" "mushop_atp" {
   data_storage_size_in_gb = 150
   admin_password          = var.database_password
   subnet_id               = oci_core_subnet.mushop_db_subnet.id
+  /* ↓↓↓　SLからNSGの変更に伴い追加 by Masataka Marukawa ↓↓↓ */  
+  nsg_ids = [
+    oci_core_network_security_group.mushop_db_network_security_group.id
+  ]
+  /* ↑↑↑ SLからNSGの変更に伴い追加 by Masataka Marukawa　↑↑↑ */
 }
 
 resource "oci_database_autonomous_database_wallet" "mushop_wallet" {

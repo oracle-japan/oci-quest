@@ -8,6 +8,12 @@ resource "oci_load_balancer_load_balancer" "mushop_lb" {
     minimum_bandwidth_in_mbps = 10
     maximum_bandwidth_in_mbps = 100
   }
+  /* ↓↓↓　SLからNSGの変更に伴い追加 by Masataka Marukawa ↓↓↓ */
+  network_security_group_ids = [
+    oci_core_network_security_group.mushop_lb_network_security_group.id
+  ]
+  depends_on = [oci_core_network_security_group.mushop_lb_network_security_group]
+  /* ↑↑↑ SLからNSGの変更に伴い追加 by Masataka Marukawa　↑↑↑ */
 }
 
 resource "oci_load_balancer_backend_set" "mushop_backend_set" {
