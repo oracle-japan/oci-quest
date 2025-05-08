@@ -86,12 +86,17 @@ resource "oci_core_instance" "mushop_bastion" {
     display_name     = "primaryvnic"
     assign_public_ip = true
     hostname_label   = format("%s-mushop-bastion", var.team_name)
+    /* ↓↓↓　SLからNSGの変更に伴い追加 by Masataka Marukawa ↓↓↓ */
+    nsg_ids = [
+      oci_core_network_security_group.mushop_bastion_network_security_group.id
+    ]
+    /* ↑↑↑ SLからNSGの変更に伴い追加 by Masataka Marukawa　↑↑↑ */ 
   }
   metadata = {
     ssh_authorized_keys = var.public_key
   }
-  # OCI Quest 設問 : コンピュート・インスタンスのメトリック情報が確認できない のためにOracle Cloud Agentのモニタリング・プラグインを有効化 by mmarukaw
-  agent_config
+  /* ↓↓↓　OCI Quest 設問 : コンピュート・インスタンスのメトリック情報が確認できない のためにOracle Cloud Agentのモニタリング・プラグインを有効化 by mmarukaw ↓↓↓ */
+  agent_config {
     are_all_plugins_disabled = false
     is_monitoring_disabled = false
     plugins_config {
@@ -99,6 +104,7 @@ resource "oci_core_instance" "mushop_bastion" {
       name = "Compute Instance Monitoring"
     }
   }
+  /* ↑↑↑　OCI Quest 設問 : コンピュート・インスタンスのメトリック情報が確認できない のためにOracle Cloud Agentのモニタリング・プラグインを有効化 by mmarukaw ↑↑↑ */
 }
 
 resource "oci_core_instance" "mushop_app_instance" {
@@ -119,13 +125,18 @@ resource "oci_core_instance" "mushop_app_instance" {
     display_name     = "primaryvnic"
     assign_public_ip = false
     hostname_label   = format("%s-mushop-app", var.team_name)
+    /* ↓↓↓　SLからNSGの変更に伴い追加 by Masataka Marukawa ↓↓↓ */
+    nsg_ids = [
+      oci_core_network_security_group.mushop_app_network_security_group.id
+    ]
+    /* ↑↑↑ SLからNSGの変更に伴い追加 by Masataka Marukawa　↑↑↑ */
   }
   metadata = {
     ssh_authorized_keys = var.public_key
     user_data           = data.cloudinit_config.mushop.rendered
   }
-  # OCI Quest 設問 : コンピュート・インスタンスのメトリック情報が確認できない のためにOracle Cloud Agentのモニタリング・プラグインを無効化 by mmarukaw
-  agent_config
+  /* ↓↓↓　OCI Quest 設問 : コンピュート・インスタンスのメトリック情報が確認できない のためにOracle Cloud Agentのモニタリング・プラグインを無効化 by mmarukaw ↓↓↓ */
+  agent_config {
     are_all_plugins_disabled = false
     is_monitoring_disabled = false
     plugins_config {
