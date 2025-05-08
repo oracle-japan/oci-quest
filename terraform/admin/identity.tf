@@ -70,6 +70,8 @@ resource "oci_identity_policy" "team_access" {
     "Allow service dpd to manage objects in compartment ${oci_identity_compartment.teams[each.key].id}",
     "Allow service dpd to read secret-family in compartment ${oci_identity_compartment.teams[each.key].id}"
   ]
+
+  depends_on = [null_resource.wait_for_compartments]
 }
 
 # コンパートメント作成直後にはポリシーを作成できないので、待つ必要がある
