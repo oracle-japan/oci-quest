@@ -25,6 +25,7 @@ locals {
     {
       catalogue_password = var.database_password
   })
+  sql_performance = file("${path.module}/scripts/sql_performance.sql")
   httpd_conf = file("${path.module}/scripts/httpd.conf")
   cloud_init = templatefile("${path.module}/scripts/cloud-config.template.yaml",
     {
@@ -32,6 +33,7 @@ locals {
       setup_template_sh_content      = base64gzip(local.setup_template)
       deploy_template_content        = base64gzip(local.deploy_template)
       catalogue_sql_template_content = base64gzip(local.catalogue_sql_template)
+      sql_performance_content        = base64gzip(local.sql_performance)
       httpd_conf_content             = base64gzip(local.httpd_conf)
       mushop_media_pars_list_content = base64gzip(local.mushop_media_pars_list)
       catalogue_password             = var.database_password
@@ -90,7 +92,7 @@ resource "oci_core_instance" "mushop_bastion" {
     nsg_ids = [
       oci_core_network_security_group.mushop_bastion_network_security_group.id
     ]
-    /* ↑↑↑ SLからNSGの変更に伴い追加 by Masataka Marukawa　↑↑↑ */ 
+    /* ↑↑↑ SLからNSGの変更に伴い追加 by Masataka Marukawa　↑↑↑ */
   }
   metadata = {
     ssh_authorized_keys = var.public_key
