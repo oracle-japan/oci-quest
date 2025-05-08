@@ -79,7 +79,7 @@ resource "null_resource" "wait_for_compartments" {
   }
 
   provisioner "local-exec" {
-    command = "sleep 20"  # 20秒待機
+    command = "sleep 600"  # 600秒待機
   }
 
   depends_on = [
