@@ -33,7 +33,7 @@ resource "oci_database_management_autonomous_database_autonomous_database_dbm_fe
     #Required
     feature = "DIAGNOSTICS_AND_MANAGEMENT"
     #Optional
-    database_connection_details {
+    # database_connection_details {
 
       #Optional
       # connection_credentials {
@@ -54,13 +54,13 @@ resource "oci_database_management_autonomous_database_autonomous_database_dbm_fe
       #   protocol        = "TCPS"
       #   service         = "questdevpdb_high"
       # }
-    }
-    connector_details {
+    # # }
+    # connector_details {
 
-      #Optional
-      connector_type       = "PE"
-      private_end_point_id = oci_database_management_db_management_private_endpoint.mushop_dbm_private_endpoint.id
-    }
+    #   #Optional
+    #   connector_type       = "PE"
+    #   private_end_point_id = oci_database_management_db_management_private_endpoint.mushop_dbm_private_endpoint.id
+    # }
   }
 }
 
