@@ -52,7 +52,7 @@ resource "oci_database_management_autonomous_database_autonomous_database_dbm_fe
         connection_type = "BASIC"
         port            = "1521"
         protocol        = "TCPS"
-        service         = "questdevpdb_high"
+        service         = format("%spdb_high", var.team_name)
       }
     }
     connector_details {
