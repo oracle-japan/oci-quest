@@ -40,7 +40,7 @@ resource "oci_database_management_autonomous_database_autonomous_database_dbm_fe
 
         #Optional
         credential_name    = "mushop_atp_dbm_credential"
-        credential_type    = "NAME_REFERENCE"
+        credential_type    = "DETAILS"
         password_secret_id = oci_vault_secret.mushop_atp_admin_password.id
         role               = "ADMIN"
         #ssl_secret_id      = oci_vault_secret.test_secret.id
