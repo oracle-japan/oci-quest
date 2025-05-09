@@ -216,7 +216,7 @@ resource "oci_core_network_security_group_security_rule" "mushop_app_network_sec
   depends_on = [oci_core_network_security_group.mushop_app_network_security_group]
 }
 
-resource "oci_core_network_security_group_security_rule" "mushop_app_network_security_group_egress_1522_to_db" {
+resource "oci_core_network_security_group_security_rule" "mushop_app_network_security_group_egress_1521_to_db" {
   network_security_group_id = oci_core_network_security_group.mushop_app_network_security_group.id
   description               = "Allow Oracle*Net egress to DB"
   direction                 = "EGRESS"
@@ -225,8 +225,8 @@ resource "oci_core_network_security_group_security_rule" "mushop_app_network_sec
   destination               = "10.0.30.0/24"
   tcp_options {
     destination_port_range {
-      min = 1522
-      max = 1522
+      min = 1521
+      max = 1521
     }
   }
   depends_on = [oci_core_network_security_group.mushop_app_network_security_group]
@@ -241,7 +241,7 @@ resource "oci_core_network_security_group" "mushop_db_network_security_group" {
   depends_on = [oci_core_vcn.mushop_vcn]
 }
 
-resource "oci_core_network_security_group_security_rule" "mushop_db_network_security_group_ingress_1522_from_app" {
+resource "oci_core_network_security_group_security_rule" "mushop_db_network_security_group_ingress_1521_from_app" {
   network_security_group_id = oci_core_network_security_group.mushop_db_network_security_group.id
   description               = "Allow Oracle*Net ingress from App"
   direction                 = "INGRESS"
@@ -250,8 +250,8 @@ resource "oci_core_network_security_group_security_rule" "mushop_db_network_secu
   source                    = "10.0.20.0/24"
   tcp_options {
     destination_port_range {
-      min = 1522
-      max = 1522
+      min = 1521
+      max = 1521
     }
   }
   depends_on = [oci_core_network_security_group.mushop_db_network_security_group]
