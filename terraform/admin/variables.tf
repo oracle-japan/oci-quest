@@ -13,4 +13,7 @@ variable "members_file" {
 variable "compartment_ocid" {
 }
 
-
+variable "admin_user_ocids" {
+  description = "開発メンバーのOCID"
+  type = list(string)
+}
