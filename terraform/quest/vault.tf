@@ -10,7 +10,7 @@ resource "oci_kms_key" "mushop_key" {
   display_name   = "mushop_key"
   key_shape {
     algorithm = "AES"
-    length    = 256
+    length    = 16
   }
   management_endpoint = oci_kms_vault.mushop_vault.management_endpoint
 }
