@@ -15,13 +15,6 @@
           "saburo.sato@example.com",
           "shiro.sato@example.com"
       ]
-    },
-    {
-      "name": "dev",
-      "description": "for developers",
-      "members": [
-          "yuki.sogawa@oracle.com"
-      ]
     }
   ]
 }
