@@ -31,7 +31,7 @@ resource "oci_database_management_autonomous_database_autonomous_database_dbm_fe
   #Optional
   feature_details {
     #Required
-    feature = "SQL_MONITORING"
+    feature = "DIAGNOSTICS_AND_MANAGEMENT"
     #Optional
     database_connection_details {
 
