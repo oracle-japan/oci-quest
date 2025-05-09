@@ -5,8 +5,7 @@
       "description": "Team Alpha",
       "members": [
         "taro.yamada@example.com",
-        "jiro.yamada@example.com",
-        "daybreaks.link@gmail.com"
+        "jiro.yamada@example.com"
       ]
     },
     {
@@ -15,6 +14,13 @@
       "members": [
           "saburo.sato@example.com",
           "shiro.sato@example.com"
+      ]
+    },
+    {
+      "name": "dev",
+      "description": "for developers",
+      "members": [
+          "yuki.sogawa@oracle.com"
       ]
     }
   ]
