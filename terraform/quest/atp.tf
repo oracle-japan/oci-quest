@@ -41,7 +41,7 @@ resource "oci_database_management_autonomous_database_autonomous_database_dbm_fe
         #Optional
         credential_name    = "mushop_atp_dbm_credential"
         credential_type    = "DETAILS"
-        password_secret_id = oci_vault_secret.mushop_atp_admin_password.id
+        password_secret_id = "ocid1.vaultsecret.oc1.ap-tokyo-1.amaaaaaao3tm64yajucjt6mviladblvh4sosldwe5nytdnkz6ffnhzclcx6q"#oci_vault_secret.mushop_atp_admin_password.id
         role               = "NORMAL"
         #ssl_secret_id      = oci_vault_secret.test_secret.id
         user_name = "ADMIN"
