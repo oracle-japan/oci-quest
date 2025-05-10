@@ -87,3 +87,14 @@ resource "oci_vault_secret" "mushop_atp_admin_password" {
 
   description = "ATP用のADMINパスワード"
 }
+
+resource "oci_identity_policy" "dbm_secrets_policy" {
+  name           = "dbm-secret-access"
+  compartment_id = var.tenancy_ocid
+  statements = [
+    "Allow service databasemanagement to read secret-bundles in compartment ${var.compartment_ocid}",
+    "Allow service databasemanagement to use vaults in compartment ${var.compartment_ocid}",
+    "Allow service databasemanagement to use keys in compartment ${var.compartment_ocid}"
+  ]
+  description = "Policy to allow DB Management to access secrets"
+}
