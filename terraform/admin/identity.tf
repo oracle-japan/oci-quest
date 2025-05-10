@@ -107,7 +107,7 @@ resource "oci_identity_policy" "admin_dev_access" {
     "Allow service dpd to read secret-family in compartment admin_dev"
   ]
 
-  depends_on = [oci_identity_compartment.admin_dev]
+  depends_on = [null_resource.wait_for_compartments]
 }
 
 
@@ -123,6 +123,7 @@ resource "null_resource" "wait_for_compartments" {
   }
 
   depends_on = [
-    oci_identity_compartment.teams
+    oci_identity_compartment.teams,
+    oci_identity_compartment.admin_dev
   ]
 }
