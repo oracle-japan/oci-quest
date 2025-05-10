@@ -225,13 +225,30 @@ resource "oci_core_network_security_group_security_rule" "mushop_app_network_sec
   destination               = "10.0.30.0/24"
   tcp_options {
     destination_port_range {
-      min = 1521
+      min = 1522
       max = 1522
     }
   }
   depends_on = [oci_core_network_security_group.mushop_app_network_security_group]
 }
 /* ↑↑↑ AppのNSG (SLからNSGの変更に伴い追加) by Masataka Marukawa ↑↑↑ */
+
+/* ↓↓↓ DBのNSG (DBMのエンドポイントのため追加) ↓↓↓ */
+resource "oci_core_network_security_group_security_rule" "mushop_db_network_security_group_egress_to_pe" {
+  network_security_group_id = oci_core_network_security_group.mushop_app_network_security_group.id
+  description               = "Allow Oracle*Net egress to DB"
+  direction                 = "EGRESS"
+  protocol                  = local.protocol.tcp
+  destination_type          = "CIDR_BLOCK"
+  destination               = "10.0.30.0/24"
+  tcp_options {
+    destination_port_range {
+      min = 1521
+      max = 1521
+    }
+  }
+  depends_on = [oci_core_network_security_group.mushop_app_network_security_group]
+}
 
 /* ↓↓↓ DBのNSG (SLからNSGの変更に伴い追加) by Masataka Marukawa ↓↓↓ */
 resource "oci_core_network_security_group" "mushop_db_network_security_group" {
@@ -250,13 +267,29 @@ resource "oci_core_network_security_group_security_rule" "mushop_db_network_secu
   source                    = "10.0.20.0/24"
   tcp_options {
     destination_port_range {
-      min = 1521
+      min = 1522
       max = 1522
     }
   }
   depends_on = [oci_core_network_security_group.mushop_db_network_security_group]
 }
 /* ↑↑↑ DBのNSG (SLからNSGの変更に伴い追加) by Masataka Marukawa ↑↑↑ */
+resource "oci_core_network_security_group_security_rule" "mushop_db_network_security_group_ingress_from_pe" {
+  network_security_group_id = oci_core_network_security_group.mushop_db_network_security_group.id
+  description               = "Allow Oracle*Net ingress from App"
+  direction                 = "INGRESS"
+  protocol                  = local.protocol.tcp
+  source_type               = "CIDR_BLOCK"
+  source                    = "10.0.30.0/24"
+  tcp_options {
+    destination_port_range {
+      min = 1521
+      max = 1521
+    }
+  }
+  depends_on = [oci_core_network_security_group.mushop_db_network_security_group]
+}
+/* ↓↓↓ DBのNSG (DBMのエンドポイントのため追加) */
 
 /* ↓↓↓ LBのセキュリティリスト (SLからNSGの変更に伴い削除) by Masataka Marukawa ↓↓↓
 resource "oci_core_security_list" "mushop_lb_security_list" {
