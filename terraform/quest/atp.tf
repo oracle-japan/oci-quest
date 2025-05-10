@@ -52,7 +52,7 @@ resource "oci_database_management_autonomous_database_autonomous_database_dbm_fe
         connection_type = "BASIC"
         port            = "1521"
         protocol        = "TCPS"
-        service = format("%s_high", oci_database_autonomous_database.mushop_atp.db_name)
+        service = "adminpdb_high" #format("%s_high", oci_database_autonomous_database.mushop_atp.db_name)
 
       }
     }
