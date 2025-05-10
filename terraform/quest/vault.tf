@@ -1,7 +1,7 @@
 resource "oci_kms_vault" "mushop_vault" {
   #Required
   compartment_id = var.compartment_ocid
-  display_name   = "mushop_vault"
+  display_name   = "new_mushop_vault"
   vault_type     = "DEFAULT"
 }
 
