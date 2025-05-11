@@ -1,6 +1,7 @@
 data "oci_logging_log_groups" "audit_log_group" {
     compartment_id = var.compartment_ocid
     display_name = "_Audit"
+    is_compartment_id_in_subtree = true
 }
 
 locals {
