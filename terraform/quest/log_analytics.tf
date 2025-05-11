@@ -7,7 +7,7 @@
 
 resource "oci_log_analytics_log_analytics_log_group" "la_group" {
   compartment_id = var.compartment_ocid
-  display_name   = "la-log-group"
+  display_name   = format("%s-la-log-group", var.team_name)
   namespace = "nrubtr8vonph"
   description    = "Log group for la logs"
 }
