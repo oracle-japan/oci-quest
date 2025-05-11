@@ -1,12 +1,3 @@
-data "oci_logging_log_groups" "audit_log_group" {
-    compartment_id = var.compartment_ocid
-    display_name = "_Audit"
-    is_compartment_id_in_subtree = true
-}
-
-locals {
-  audit_log_group_id = data.oci_logging_log_groups.audit_log_group.log_groups[0].id
-}
 
 resource oci_sch_service_connector "audit_to_la" {
   compartment_id = var.compartment_ocid
@@ -15,7 +6,7 @@ resource oci_sch_service_connector "audit_to_la" {
     kind = "logging"
     log_sources {
       compartment_id = var.compartment_ocid
-      log_group_id   = local.audit_log_group_id
+      log_group_id   = "_Audit"
     }
   }
   state = "ACTIVE"
