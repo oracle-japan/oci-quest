@@ -17,7 +17,7 @@ resource oci_sch_service_connector "audit_to_la" {
 }
 
 resource "oci_identity_policy" "sch_policy" {
-  name           = "sch_policy"
+  name           = format("%s_sch_policy", var.team_name)
   compartment_id = var.tenancy_ocid
   description = "コネクタハブのポリシー"
   statements = [
