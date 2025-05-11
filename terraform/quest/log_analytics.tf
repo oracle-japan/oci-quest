@@ -5,8 +5,8 @@ resource "oci_log_analytics_namespace" "la_namespace" {
 }
 
 resource "oci_log_analytics_log_analytics_log_group" "la_group" {
-  compartment_id = var.compartment_ocid
-  display_name   = "example-log-group"
+  compartment_id = var.tenancy_ocid
+  display_name   = "la-log-group"
   namespace = "nrubtr8vonph"
-  description    = "Log group for application logs"
+  description    = "Log group for la logs"
 }
