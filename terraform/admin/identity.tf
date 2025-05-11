@@ -114,6 +114,16 @@ resource "oci_identity_policy" "admin_dev_access" {
   depends_on = [null_resource.wait_for_compartments]
 }
 
+resource "oci_identity_policy" "common_policy" {
+  name           = "common_policy"
+  compartment_id = var.tenancy_ocid
+  description = "共通のポリシー"
+  statements = [
+    "Allow service loganalytics to read loganalytics-features-family in tenancy"
+  ]
+
+  depends_on = [null_resource.wait_for_compartments]
+}
 
 
 # コンパートメント作成直後にはポリシーを作成できないので、待つ必要がある

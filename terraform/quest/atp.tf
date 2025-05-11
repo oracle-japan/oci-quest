@@ -52,7 +52,7 @@ resource "oci_database_management_autonomous_database_autonomous_database_dbm_fe
         connection_type = "BASIC"
         port            = "1521"
         protocol        = "TCPS"
-        service = format("%s_high", oci_database_autonomous_database.mushop_atp.db_name)
+        service = "g67cd4bfb36ef53_adminpdb_high.adb.oraclecloud.com" #format("%s_high", oci_database_autonomous_database.mushop_atp.db_name)
 
       }
     }
@@ -86,4 +86,14 @@ resource "oci_vault_secret" "mushop_atp_admin_password" {
   }
 
   description = "ATP用のADMINパスワード"
+}
+
+resource "oci_identity_policy" "dbm_secrets_policy" {
+  name           = "dbm-secret-access"
+  compartment_id = var.tenancy_ocid
+  statements = [
+    "Allow service dpd to use vaults in compartment id ${var.compartment_ocid}",
+    "Allow service dpd to use keys in compartment id ${var.compartment_ocid}"
+  ]
+  description = "Policy to allow DB Management to access secrets"
 }
