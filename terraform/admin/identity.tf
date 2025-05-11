@@ -92,7 +92,9 @@ resource "oci_identity_policy" "team_access" {
     "Allow service dpd to manage objects in compartment ${each.key}",
     "Allow service dpd to read secret-family in compartment ${each.key}",
     "Allow service dpd to use vaults in compartment ${each.key}",
-    "Allow service dpd to use keys in compartment ${each.key}"
+    "Allow service dpd to use keys in compartment ${each.key}",
+    "Allow group ${each.key} to manage loganalytics-features-family in tenancy",
+    "Allow group ${each.key} to manage loganalytics-resources-family in tenancy"
   ]
 
   depends_on = [null_resource.wait_for_compartments]
@@ -108,7 +110,9 @@ resource "oci_identity_policy" "admin_dev_access" {
     "Allow service dpd to manage objects in compartment admin_dev",
     "Allow service dpd to read secret-family in compartment admin_dev",
     "Allow service dpd to use vaults in compartment admin_dev",
-    "Allow service dpd to use keys in compartment admin_dev"
+    "Allow service dpd to use keys in compartment admin_dev",
+    "Allow group admin_dev to manage loganalytics-features-family in tenancy",
+    "Allow group admin_dev to manage loganalytics-resources-family in tenancy"
   ]
 
   depends_on = [null_resource.wait_for_compartments]
@@ -119,7 +123,10 @@ resource "oci_identity_policy" "common_policy" {
   compartment_id = var.tenancy_ocid
   description = "共通のポリシー"
   statements = [
-    "Allow service loganalytics to read loganalytics-features-family in tenancy"
+    "Allow service loganalytics to read loganalytics-features-family in tenancy",
+    "Allow service loganalytics to {LOG_ANALYTICS_LIFECYCLE_INSPECT, LOG_ANALYTICS_LIFECYCLE_READ} in tenancy",
+    "Allow service loganalytics to MANAGE cloud-events-rule in tenancy",
+    "Allow service loganalytics to READ compartments in tenancy"
   ]
 
   depends_on = [null_resource.wait_for_compartments]
