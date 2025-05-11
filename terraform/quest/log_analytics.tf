@@ -1,5 +1,5 @@
 resource "oci_log_analytics_namespace" "la_namespace" {
-  compartment_id = var.compartment_ocid
+  compartment_id = var.tenancy_ocid
   is_onboarded = true
   namespace = format("%s-la", var.team_name)
 }
