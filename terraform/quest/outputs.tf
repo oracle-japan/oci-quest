@@ -12,5 +12,5 @@ output "app_private_ip" {
 
 
 output "atp_connection_string" {
-  value = oci_database_autonomous_database.mushop_atp.connection_strings.high
+  value = oci_database_autonomous_database.mushop_atp.connection_strings[0].high
 }
