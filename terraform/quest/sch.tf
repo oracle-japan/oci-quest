@@ -5,7 +5,7 @@ resource oci_sch_service_connector "audit_to_la" {
   source {
     kind = "logging"
     log_sources {
-      compartment_id = var.compartment_ocid
+      compartment_id = var.tenancy_ocid
       log_group_id   = "_Audit"
     }
   }
