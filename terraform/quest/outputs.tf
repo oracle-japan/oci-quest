@@ -9,3 +9,7 @@ output "bastion_ip" {
 output "app_private_ip" {
   value = oci_core_instance.mushop_app_instance.private_ip
 }
+
+output "atp_connection_string" {
+  value = oci_database_autonomous_database.mushop_atp.connection_strings
+}
