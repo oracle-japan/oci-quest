@@ -1,3 +1,11 @@
+locals {
+  full_high_string = oci_database_autonomous_database.mushop_atp.connection_strings[0].high
+
+  # 正規表現で `/` の後ろの部分（サービス名）を抽出
+  high_service_name = regex("/(.+)$", local.full_high_string)[0]
+}
+
+
 resource "oci_database_autonomous_database" "mushop_atp" {
   compartment_id          = var.compartment_ocid
   display_name            = format("%s-mushop-db", var.team_name)
@@ -52,7 +60,7 @@ resource "oci_database_management_autonomous_database_autonomous_database_dbm_fe
         connection_type = "BASIC"
         port            = "1521"
         protocol        = "TCPS"
-        service = "g67cd4bfb36ef53_alphapdb_high.adb.oraclecloud.com" #format("%s_high", oci_database_autonomous_database.mushop_atp.db_name)
+        service = local.high_service_name
 
       }
     }
