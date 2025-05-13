@@ -31,47 +31,47 @@ resource "oci_database_autonomous_database_wallet" "mushop_wallet" {
   base64_encode_content  = true
 }
 
-# resource "oci_database_management_autonomous_database_autonomous_database_dbm_features_management" "mushop_dbm" {
-#   #Required
-#   autonomous_database_id                 = oci_database_autonomous_database.mushop_atp.id
-#   enable_autonomous_database_dbm_feature = true
+resource "oci_database_management_autonomous_database_autonomous_database_dbm_features_management" "mushop_dbm" {
+  #Required
+  autonomous_database_id                 = oci_database_autonomous_database.mushop_atp.id
+  enable_autonomous_database_dbm_feature = true
 
-#   #Optional
-#   feature_details {
-#     #Required
-#     feature = "DIAGNOSTICS_AND_MANAGEMENT"
-#     #Optional
-#     database_connection_details {
+  #Optional
+  feature_details {
+    #Required
+    feature = "DIAGNOSTICS_AND_MANAGEMENT"
+    #Optional
+    database_connection_details {
 
-#       #Optional
-#       connection_credentials {
+      #Optional
+      connection_credentials {
 
-#         #Optional
-#         credential_name    = "mushop_atp_dbm_credential"
-#         credential_type    = "DETAILS"
-#         password_secret_id = oci_vault_secret.mushop_atp_admin_password.id
-#         role               = "NORMAL"
-#         #ssl_secret_id      = oci_vault_secret.test_secret.id
-#         user_name = "ADMIN"
-#       }
-#       connection_string {
+        #Optional
+        credential_name    = "mushop_atp_dbm_credential"
+        credential_type    = "DETAILS"
+        password_secret_id = oci_vault_secret.mushop_atp_admin_password.id
+        role               = "NORMAL"
+        #ssl_secret_id      = oci_vault_secret.test_secret.id
+        user_name = "ADMIN"
+      }
+      connection_string {
 
-#         #Optional
-#         connection_type = "BASIC"
-#         port            = "1521"
-#         protocol        = "TCPS"
-#         service = local.high_service_name
+        #Optional
+        connection_type = "BASIC"
+        port            = "1521"
+        protocol        = "TCPS"
+        service = local.high_service_name
 
-#       }
-#     }
-#     connector_details {
+      }
+    }
+    connector_details {
 
-#       #Optional
-#       connector_type       = "PE"
-#       private_end_point_id = oci_database_management_db_management_private_endpoint.mushop_dbm_private_endpoint.id
-#     }
-#   }
-# }
+      #Optional
+      connector_type       = "PE"
+      private_end_point_id = oci_database_management_db_management_private_endpoint.mushop_dbm_private_endpoint.id
+    }
+  }
+}
 
 resource "oci_database_management_db_management_private_endpoint" "mushop_dbm_private_endpoint" {
   #Required
