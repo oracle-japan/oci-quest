@@ -121,22 +121,22 @@ resource "oci_core_network_security_group" "mushop_lb_network_security_group" {
   depends_on = [oci_core_vcn.mushop_vcn]
 }
 
-/*　↓↓↓ OCI Quest 設問 : MuShop のトップページにアクセスできません のために、LBへのhttp/httpsのイングレスルールをコメントアウト by Masataka Marukawa　↓↓↓
-resource "oci_core_network_security_group_security_rule" "mushop_lb_network_security_group_ingress_http" {
-  network_security_group_id = oci_core_network_security_group.mushop_lb_network_security_group.id
-  description               = "Allow HTTP ingress"
-  direction                 = "INGRESS"
-  protocol                  = local.protocol.tcp
-  source_type               = "CIDR_BLOCK"
-  source                    = "0.0.0.0/0"
-  tcp_options {
-    destination_port_range {
-      min = 80
-      max = 80
-    }
-  }
-  depends_on = [oci_core_network_security_group.mushop_lb_network_security_group]
-}
+# OCI Quest 設問 : MuShop のトップページにアクセスできません のために意図的にコメントアウト
+# resource "oci_core_network_security_group_security_rule" "mushop_lb_network_security_group_ingress_http" {
+#   network_security_group_id = oci_core_network_security_group.mushop_lb_network_security_group.id
+#   description               = "Allow HTTP ingress"
+#   direction                 = "INGRESS"
+#   protocol                  = local.protocol.tcp
+#   source_type               = "CIDR_BLOCK"
+#   source                    = "0.0.0.0/0"
+#   tcp_options {
+#     destination_port_range {
+#       min = 80
+#       max = 80
+#     }
+#   }
+#   depends_on = [oci_core_network_security_group.mushop_lb_network_security_group]
+# }
 
 resource "oci_core_network_security_group_security_rule" "mushop_lb_network_security_group_ingress_https" {
   network_security_group_id = oci_core_network_security_group.mushop_lb_network_security_group.id
@@ -299,128 +299,6 @@ resource "oci_core_network_security_group_security_rule" "mushop_db_network_secu
   }
   depends_on = [oci_core_network_security_group.mushop_db_network_security_group]
 }
-/* ↓↓↓ DBのNSG (DBMのエンドポイントのため追加) */
-
-/* ↓↓↓ LBのセキュリティリスト (SLからNSGの変更に伴い削除) by Masataka Marukawa ↓↓↓
-resource "oci_core_security_list" "mushop_lb_security_list" {
-  compartment_id = var.compartment_ocid
-  vcn_id         = oci_core_vcn.mushop_vcn.id
-  display_name   = format("%s-mushop-lb-security-list", var.team_name)
-  ingress_security_rules {
-    protocol    = local.protocol.tcp
-    source      = "0.0.0.0/0"
-    source_type = "CIDR_BLOCK"
-    tcp_options {
-      max = "22"
-      min = "22"
-    }
-  }
-  ingress_security_rules {
-    protocol    = local.protocol.all
-    source      = "0.0.0.0/0"
-    source_type = "CIDR_BLOCK"
-  }
-  ingress_security_rules {
-    protocol    = local.protocol.tcp
-    source      = "0.0.0.0/0"
-    source_type = "CIDR_BLOCK"
-    tcp_options {
-      max = "80"
-      min = "80"
-    }
-  }
-  ingress_security_rules {
-    protocol    = local.protocol.tcp
-    source      = "0.0.0.0/0"
-    source_type = "CIDR_BLOCK"
-    tcp_options {
-      max = "443"
-      min = "443"
-    }
-  }
-  egress_security_rules {
-    protocol         = local.protocol.all
-    destination      = "0.0.0.0/0"
-    destination_type = "CIDR_BLOCK"
-  }
-  depends_on = [oci_core_vcn.mushop_vcn]
-}
-↑↑↑ LBのセキュリティリスト (SLからNSGの変更に伴い削除) by Masataka Marukawa ↑↑↑ */
-
-/* ↓↓↓ Appのセキュリティリスト (SLからNSGの変更に伴い削除) by Masataka Marukawa ↓↓↓
-resource "oci_core_security_list" "mushop_app_security_list" {
-  compartment_id = var.compartment_ocid
-  vcn_id         = oci_core_vcn.mushop_vcn.id
-  display_name   = format("%s-mushop-app-security-list", var.team_name)
-  ingress_security_rules {
-    protocol    = local.protocol.all
-    source      = "10.0.10.0/24"
-    source_type = "CIDR_BLOCK"
-  }
-  ingress_security_rules {
-    protocol    = local.protocol.tcp
-    source      = "10.0.10.0/24"
-    source_type = "CIDR_BLOCK"
-    tcp_options {
-      max = "22"
-      min = "22"
-    }
-  }
-  ingress_security_rules {
-    protocol    = local.protocol.tcp
-    source      = "10.0.10.0/24"
-    source_type = "CIDR_BLOCK"
-    tcp_options {
-      max = "80"
-      min = "80"
-    }
-  }
-  egress_security_rules {
-    protocol         = local.protocol.all
-    destination      = "0.0.0.0/0"
-    destination_type = "CIDR_BLOCK"
-  }
-  egress_security_rules {
-    protocol         = local.protocol.all
-    destination      = local.all_services.cidr_block
-    destination_type = "SERVICE_CIDR_BLOCK"
-  }
-  egress_security_rules {
-    protocol         = local.protocol.tcp
-    destination      = "10.0.30.0/24"
-    destination_type = "CIDR_BLOCK"
-    tcp_options {
-      max = "1522"
-      min = "1522"
-    }
-  }
-  depends_on = [oci_core_vcn.mushop_vcn]
-}
-↑↑↑ Appのセキュリティリスト (SLからNSGの変更に伴い削除) by Masataka Marukawa ↑↑↑ */
-
-/* ↓↓↓ DBのセキュリティリスト (SLからNSGの変更に伴い削除) by Masataka Marukawa ↓↓↓
-resource "oci_core_security_list" "mushop_db_security_list" {
-  compartment_id = var.compartment_ocid
-  vcn_id         = oci_core_vcn.mushop_vcn.id
-  display_name   = format("%s-mushop-db-security-list", var.team_name)
-  ingress_security_rules {
-    protocol    = local.protocol.all
-    source      = "10.0.10.0/24"
-    source_type = "CIDR_BLOCK"
-    stateless   = true
-  }
-  ingress_security_rules {
-    protocol    = local.protocol.tcp
-    source      = "10.0.20.0/24"
-    source_type = "CIDR_BLOCK"
-    tcp_options {
-      max = "1522"
-      min = "1522"
-    }
-  }
-  depends_on = [oci_core_vcn.mushop_vcn]
-}
-↑↑↑ Appのセキュリティリスト (SLからNSGの変更に伴い削除) by Masataka Marukawa ↑↑↑ */
 
 resource "oci_core_subnet" "mushop_lb_subnet" {
   cidr_block     = "10.0.10.0/24"
