@@ -174,9 +174,9 @@ resource "oci_core_network_security_group" "mushop_app_network_security_group" {
   depends_on = [oci_core_vcn.mushop_vcn]
 }
 
-resource "oci_core_network_security_group_security_rule" "mushop_app_network_security_group_ingress_ssh_from_lb" {
+resource "oci_core_network_security_group_security_rule" "mushop_app_network_security_group_ingress_ssh_from_bastion" {
   network_security_group_id = oci_core_network_security_group.mushop_app_network_security_group.id
-  description               = "Allow SSH ingress from LB"
+  description               = "Allow SSH ingress from bastion"
   direction                 = "INGRESS"
   protocol                  = local.protocol.tcp
   source_type               = "CIDR_BLOCK"
@@ -203,6 +203,16 @@ resource "oci_core_network_security_group_security_rule" "mushop_app_network_sec
       max = 80
     }
   }
+  depends_on = [oci_core_network_security_group.mushop_app_network_security_group]
+}
+
+resource "oci_core_network_security_group_security_rule" "mushop_app_network_security_group_egress_all" {
+  network_security_group_id = oci_core_network_security_group.mushop_app_network_security_group.id
+  description               = "Allow all egress"
+  direction                 = "EGRESS"
+  protocol                  = local.protocol.all
+  destination_type          = "CIDR_BLOCK"
+  destination               = "0.0.0.0/0"
   depends_on = [oci_core_network_security_group.mushop_app_network_security_group]
 }
 
