@@ -133,22 +133,21 @@ resource "oci_core_network_security_group" "mushop_lb_network_security_group" {
 #   depends_on = [oci_core_network_security_group.mushop_lb_network_security_group]
 # }
 
-resource "oci_core_network_security_group_security_rule" "mushop_lb_network_security_group_ingress_https" {
-  network_security_group_id = oci_core_network_security_group.mushop_lb_network_security_group.id
-  description               = "Allow HTTPS ingress"
-  direction                 = "INGRESS"
-  protocol                  = local.protocol.tcp
-  source_type               = "CIDR_BLOCK"
-  source                    = "0.0.0.0/0"
-  tcp_options {
-    destination_port_range {
-      min = 443
-      max = 443
-    }
-  }
-  depends_on = [oci_core_network_security_group.mushop_lb_network_security_group]
-}
-↑↑↑ OCI Quest 設問 : MuShop のトップページにアクセスできません のために、LBへのhttp/httpsのイングレスルールをコメントアウト by Masataka Marukawa　↑↑↑　*/
+# resource "oci_core_network_security_group_security_rule" "mushop_lb_network_security_group_ingress_https" {
+#   network_security_group_id = oci_core_network_security_group.mushop_lb_network_security_group.id
+#   description               = "Allow HTTPS ingress"
+#   direction                 = "INGRESS"
+#   protocol                  = local.protocol.tcp
+#   source_type               = "CIDR_BLOCK"
+#   source                    = "0.0.0.0/0"
+#   tcp_options {
+#     destination_port_range {
+#       min = 443
+#       max = 443
+#     }
+#   }
+#   depends_on = [oci_core_network_security_group.mushop_lb_network_security_group]
+# }
 
 resource "oci_core_network_security_group_security_rule" "mushop_lb_network_security_group_egress_all" {
   network_security_group_id = oci_core_network_security_group.mushop_lb_network_security_group.id
