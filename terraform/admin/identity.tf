@@ -94,7 +94,8 @@ resource "oci_identity_policy" "team_access" {
     "Allow service dpd to use vaults in compartment ${each.key}",
     "Allow service dpd to use keys in compartment ${each.key}",
     "Allow group ${each.key} to manage loganalytics-features-family in tenancy",
-    "Allow group ${each.key} to manage loganalytics-resources-family in tenancy"
+    "Allow group ${each.key} to manage loganalytics-resources-family in tenancy",
+    "Allow group ${each.key} to use cloud-shell in tenancy"
   ]
 
   depends_on = [null_resource.wait_for_compartments]
@@ -112,7 +113,8 @@ resource "oci_identity_policy" "admin_dev_access" {
     "Allow service dpd to use vaults in compartment admin_dev",
     "Allow service dpd to use keys in compartment admin_dev",
     "Allow group admin_dev to manage loganalytics-features-family in tenancy",
-    "Allow group admin_dev to manage loganalytics-resources-family in tenancy"
+    "Allow group admin_dev to manage loganalytics-resources-family in tenancy",
+    "Allow group admin_dev to use cloud-shell in tenancy"
   ]
 
   depends_on = [null_resource.wait_for_compartments]
