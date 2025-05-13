@@ -73,16 +73,14 @@ resource "oci_core_route_table" "mushop_private_route_table" {
     destination_type  = "CIDR_BLOCK"
     network_entity_id = oci_core_nat_gateway.mushop_nat_gateway.id
   }
-  */
   depends_on = [oci_core_vcn.mushop_vcn]
 }
 
-/* ↓↓↓ bastionのNSG (SLからNSGの変更に伴い追加) by Masataka Marukawa ↓↓↓ */
 resource "oci_core_network_security_group" "mushop_bastion_network_security_group" {
   compartment_id = var.compartment_ocid
   vcn_id         = oci_core_vcn.mushop_vcn.id
   display_name   = format("%s-mushop-bastion-network-security-group", var.team_name)
-  depends_on = [oci_core_vcn.mushop_vcn]
+  depends_on     = [oci_core_vcn.mushop_vcn]
 }
 
 resource "oci_core_network_security_group_security_rule" "mushop_bastion_network_security_group_ingress_ssh" {
@@ -108,16 +106,14 @@ resource "oci_core_network_security_group_security_rule" "mushop_bastion_network
   protocol                  = local.protocol.all
   destination_type          = "CIDR_BLOCK"
   destination               = "0.0.0.0/0"
-  depends_on = [oci_core_network_security_group.mushop_bastion_network_security_group]
+  depends_on                = [oci_core_network_security_group.mushop_bastion_network_security_group]
 }
-/* ↑↑↑ bastionのNSG (SLからNSGの変更に伴い追加) by Masataka Marukawa ↑↑↑ */
 
-/* ↓↓↓ LBのNSG (SLからNSGの変更に伴い追加) by Masataka Marukawa ↓↓↓ */
 resource "oci_core_network_security_group" "mushop_lb_network_security_group" {
   compartment_id = var.compartment_ocid
   vcn_id         = oci_core_vcn.mushop_vcn.id
   display_name   = format("%s-mushop-lb-network-security-group", var.team_name)
-  depends_on = [oci_core_vcn.mushop_vcn]
+  depends_on     = [oci_core_vcn.mushop_vcn]
 }
 
 # OCI Quest 設問 : MuShop のトップページにアクセスできません のために意図的にコメントアウト
@@ -161,16 +157,14 @@ resource "oci_core_network_security_group_security_rule" "mushop_lb_network_secu
   protocol                  = local.protocol.all
   destination_type          = "CIDR_BLOCK"
   destination               = "0.0.0.0/0"
-  depends_on = [oci_core_network_security_group.mushop_lb_network_security_group]
+  depends_on                = [oci_core_network_security_group.mushop_lb_network_security_group]
 }
-/* ↑↑↑ LBのNSG (SLからNSGの変更に伴い追加) by Masataka Marukawa ↑↑↑ */
 
-/* ↓↓↓ AppのNSG (SLからNSGの変更に伴い追加) by Masataka Marukawa ↓↓↓ */
 resource "oci_core_network_security_group" "mushop_app_network_security_group" {
   compartment_id = var.compartment_ocid
   vcn_id         = oci_core_vcn.mushop_vcn.id
   display_name   = format("%s-mushop-app-network-security-group", var.team_name)
-  depends_on = [oci_core_vcn.mushop_vcn]
+  depends_on     = [oci_core_vcn.mushop_vcn]
 }
 
 resource "oci_core_network_security_group_security_rule" "mushop_app_network_security_group_ingress_ssh_from_bastion" {
@@ -212,7 +206,7 @@ resource "oci_core_network_security_group_security_rule" "mushop_app_network_sec
   protocol                  = local.protocol.all
   destination_type          = "CIDR_BLOCK"
   destination               = "0.0.0.0/0"
-  depends_on = [oci_core_network_security_group.mushop_app_network_security_group]
+  depends_on                = [oci_core_network_security_group.mushop_app_network_security_group]
 }
 
 resource "oci_core_network_security_group_security_rule" "mushop_app_network_security_group_egress_all_to_osn" {
@@ -222,7 +216,7 @@ resource "oci_core_network_security_group_security_rule" "mushop_app_network_sec
   protocol                  = local.protocol.all
   destination_type          = "SERVICE_CIDR_BLOCK"
   destination               = local.all_services.cidr_block
-  depends_on = [oci_core_network_security_group.mushop_app_network_security_group]
+  depends_on                = [oci_core_network_security_group.mushop_app_network_security_group]
 }
 
 resource "oci_core_network_security_group_security_rule" "mushop_app_network_security_group_egress_to_db" {
@@ -240,9 +234,7 @@ resource "oci_core_network_security_group_security_rule" "mushop_app_network_sec
   }
   depends_on = [oci_core_network_security_group.mushop_app_network_security_group]
 }
-/* ↑↑↑ AppのNSG (SLからNSGの変更に伴い追加) by Masataka Marukawa ↑↑↑ */
 
-/* ↓↓↓ DBのNSG (DBMのエンドポイントのため追加) ↓↓↓ */
 resource "oci_core_network_security_group_security_rule" "mushop_db_network_security_group_egress_to_pe" {
   network_security_group_id = oci_core_network_security_group.mushop_app_network_security_group.id
   description               = "Allow Oracle*Net egress to DB"
@@ -259,12 +251,11 @@ resource "oci_core_network_security_group_security_rule" "mushop_db_network_secu
   depends_on = [oci_core_network_security_group.mushop_app_network_security_group]
 }
 
-/* ↓↓↓ DBのNSG (SLからNSGの変更に伴い追加) by Masataka Marukawa ↓↓↓ */
 resource "oci_core_network_security_group" "mushop_db_network_security_group" {
   compartment_id = var.compartment_ocid
   vcn_id         = oci_core_vcn.mushop_vcn.id
   display_name   = format("%s-mushop-db-network-security-group", var.team_name)
-  depends_on = [oci_core_vcn.mushop_vcn]
+  depends_on     = [oci_core_vcn.mushop_vcn]
 }
 
 resource "oci_core_network_security_group_security_rule" "mushop_db_network_security_group_ingress_from_app" {
@@ -282,7 +273,7 @@ resource "oci_core_network_security_group_security_rule" "mushop_db_network_secu
   }
   depends_on = [oci_core_network_security_group.mushop_db_network_security_group]
 }
-/* ↑↑↑ DBのNSG (SLからNSGの変更に伴い追加) by Masataka Marukawa ↑↑↑ */
+
 resource "oci_core_network_security_group_security_rule" "mushop_db_network_security_group_ingress_from_pe" {
   network_security_group_id = oci_core_network_security_group.mushop_db_network_security_group.id
   description               = "Allow Oracle*Net ingress from App"
@@ -300,14 +291,9 @@ resource "oci_core_network_security_group_security_rule" "mushop_db_network_secu
 }
 
 resource "oci_core_subnet" "mushop_lb_subnet" {
-  cidr_block     = "10.0.10.0/24"
-  compartment_id = var.compartment_ocid
-  vcn_id         = oci_core_vcn.mushop_vcn.id
-  /* SLからNSGの変更に伴い削除 by Masataka Marukawa
-  security_list_ids = [
-    oci_core_security_list.mushop_lb_security_list.id
-  ]
-  */
+  cidr_block                 = "10.0.10.0/24"
+  compartment_id             = var.compartment_ocid
+  vcn_id                     = oci_core_vcn.mushop_vcn.id
   display_name               = format("%s-mushop-lb-subnet", var.team_name)
   route_table_id             = oci_core_route_table.mushop_public_route_table.id
   prohibit_public_ip_on_vnic = false
@@ -316,14 +302,9 @@ resource "oci_core_subnet" "mushop_lb_subnet" {
 }
 
 resource "oci_core_subnet" "mushop_app_subnet" {
-  cidr_block     = "10.0.20.0/24"
-  compartment_id = var.compartment_ocid
-  vcn_id         = oci_core_vcn.mushop_vcn.id
-  /* SLからNSGの変更に伴い削除 by Masataka Marukawa
-  security_list_ids = [
-    oci_core_security_list.mushop_app_security_list.id
-  ]
-  */
+  cidr_block                 = "10.0.20.0/24"
+  compartment_id             = var.compartment_ocid
+  vcn_id                     = oci_core_vcn.mushop_vcn.id
   display_name               = format("%s-mushop-app-subnet", var.team_name)
   route_table_id             = oci_core_route_table.mushop_private_route_table.id
   prohibit_public_ip_on_vnic = true
@@ -332,14 +313,9 @@ resource "oci_core_subnet" "mushop_app_subnet" {
 }
 
 resource "oci_core_subnet" "mushop_db_subnet" {
-  cidr_block     = "10.0.30.0/24"
-  compartment_id = var.compartment_ocid
-  vcn_id         = oci_core_vcn.mushop_vcn.id
-  /* SLからNSGの変更に伴い削除 by Masataka Marukawa
-  security_list_ids = [
-    oci_core_security_list.mushop_db_security_list.id
-  ]
-  */
+  cidr_block                 = "10.0.30.0/24"
+  compartment_id             = var.compartment_ocid
+  vcn_id                     = oci_core_vcn.mushop_vcn.id
   display_name               = format("%s-mushop-db-subnet", var.team_name)
   route_table_id             = oci_core_route_table.mushop_private_route_table.id
   prohibit_public_ip_on_vnic = true
