@@ -29,7 +29,7 @@ resource "oci_objectstorage_preauthrequest" "mushop_wallet_preauth" {
   bucket       = oci_objectstorage_bucket.mushop.name
   name         = format("%s-mushop-wallet-preauth", var.team_name)
   namespace    = local.namespace
-  time_expires = timeadd(timestamp(), "30m")
+  time_expires = timeadd(timestamp(), "72h")
   object_name  = oci_objectstorage_object.mushop_wallet.object
 }
 
@@ -45,7 +45,7 @@ resource "oci_objectstorage_preauthrequest" "mushop_media_pars_list_preauth" {
   bucket       = oci_objectstorage_bucket.mushop.name
   name         = format("%s-mushop_media_pars_list_preauth", var.team_name)
   namespace    = local.namespace
-  time_expires = timeadd(timestamp(), "30m")
+  time_expires = timeadd(timestamp(), "72h")
   object_name  = oci_objectstorage_object.mushop_media_pars_list.object
 }
 
@@ -78,5 +78,5 @@ resource "oci_objectstorage_preauthrequest" "mushop_media_pars_preauth" {
   object_name  = each.value.object
   name         = "mushop_media_pars_par"
   access_type  = "ObjectRead"
-  time_expires = timeadd(timestamp(), "30m")
+  time_expires = timeadd(timestamp(), "72h")
 }
