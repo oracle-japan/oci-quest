@@ -42,6 +42,7 @@ locals {
       mock_mode                      = "carts,orders,users"
       db_name                        = oci_database_autonomous_database.mushop_atp.db_name
       assets_url                     = "https://objectstorage.${var.region}.oraclecloud.com/n/${oci_objectstorage_bucket.mushop_media.namespace}/b/${oci_objectstorage_bucket.mushop_media.name}/o/"
+      public_key = tls_private_key.bastion_ssh_key.public_key_openssh
   })
 }
 
@@ -96,6 +97,7 @@ resource "oci_core_instance" "mushop_bastion" {
   }
   metadata = {
     ssh_authorized_keys = var.public_key
+    user_data           = data.cloudinit_config.bastion.rendered
   }
   /* ↓↓↓　OCI Quest 設問 : コンピュート・インスタンスのメトリック情報が確認できない のためにOracle Cloud Agentのモニタリング・プラグインを有効化 by mmarukaw ↓↓↓ */
   agent_config {
@@ -134,7 +136,6 @@ resource "oci_core_instance" "mushop_app_instance" {
     /* ↑↑↑ SLからNSGの変更に伴い追加 by Masataka Marukawa　↑↑↑ */
   }
   metadata = {
-    ssh_authorized_keys = var.public_key
     user_data           = data.cloudinit_config.mushop.rendered
   }
   /* ↓↓↓　OCI Quest 設問 : コンピュート・インスタンスのメトリック情報が確認できない のためにOracle Cloud Agentのモニタリング・プラグインを無効化 by mmarukaw ↓↓↓ */
@@ -145,5 +146,30 @@ resource "oci_core_instance" "mushop_app_instance" {
       desired_state = "DISABLED"
       name = "Compute Instance Monitoring"
     }
+  }
+}
+
+resource "tls_private_key" "bastion_ssh_key" {
+  algorithm = "RSA"
+  rsa_bits  = 2048
+}
+
+data "cloudinit_config" "bastion" {
+  gzip          = true
+  base64_encode = true
+
+  part {
+    filename     = "bastion-init.sh"
+    content_type = "text/x-shellscript"
+    content      = <<-EOF
+      #!/bin/bash
+      mkdir -p /home/opc/.ssh
+      echo "${tls_private_key.bastion_ssh_key.private_key_pem}" > /home/opc/.ssh/id_rsa
+      echo "${tls_private_key.bastion_ssh_key.public_key_openssh}" > /home/opc/.ssh/id_rsa.pub
+      chown -R opc:opc /home/opc/.ssh
+      chmod 700 /home/opc/.ssh
+      chmod 600 /home/opc/.ssh/id_rsa
+      chmod 644 /home/opc/.ssh/id_rsa.pub
+    EOF
   }
 }

@@ -14,6 +14,9 @@ resource oci_sch_service_connector "audit_to_la" {
     kind         = "loggingAnalytics"
     log_group_id = oci_log_analytics_log_analytics_log_group.la_group.id
   }
+
+  depends_on = [oci_log_analytics_log_analytics_log_group.la_group]
+
 }
 
 resource "oci_identity_policy" "sch_policy" {
