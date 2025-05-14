@@ -1,5 +1,8 @@
 #cloud-config
 
+ssh_authorized_keys:
+  - ${public_key}
+
 write_files:
 # setup script
   - path: "/root/setup.preflight.sh"
