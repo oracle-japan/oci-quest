@@ -49,7 +49,7 @@ resource "oci_database_management_autonomous_database_autonomous_database_dbm_fe
         #Optional
         credential_name    = "mushop_atp_dbm_credential"
         credential_type    = "DETAILS"
-        password_secret_id = oci_vault_secret.mushop_atp_admin_password.id
+        password_secret_id = var.database_password_secret_id
         role               = "NORMAL"
         #ssl_secret_id      = oci_vault_secret.test_secret.id
         user_name = "ADMIN"
@@ -82,16 +82,16 @@ resource "oci_database_management_db_management_private_endpoint" "mushop_dbm_pr
 
 
 
-resource "oci_vault_secret" "mushop_atp_admin_password" {
-  compartment_id = var.compartment_ocid
-  secret_name    = "atp_admin_password"
-  vault_id       = oci_kms_vault.mushop_vault.id
-  key_id         = oci_kms_key.mushop_key.id
+# resource "oci_vault_secret" "mushop_atp_admin_password" {
+#   compartment_id = var.compartment_ocid
+#   secret_name    = "atp_admin_password"
+#   vault_id       = oci_kms_vault.mushop_vault.id
+#   key_id         = oci_kms_key.mushop_key.id
 
-  secret_content {
-    content_type = "BASE64"
-    content      = base64encode(var.database_password)
-  }
+#   secret_content {
+#     content_type = "BASE64"
+#     content      = base64encode(var.database_password)
+#   }
 
-  description = "ATP用のADMINパスワード"
-}
+#   description = "ATP用のADMINパスワード"
+# }

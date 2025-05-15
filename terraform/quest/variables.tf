@@ -20,3 +20,7 @@ variable "public_key" {
 
 variable "database_password" {
 }
+
+variable "database_password_secret_id" {
+}
+

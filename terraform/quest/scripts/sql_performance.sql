@@ -53,3 +53,6 @@ insert /*+append */ into SHADMIN.SALES nologging select * from SHADMIN.SALES;
 commit;
 insert /*+append */ into SHADMIN.SALES nologging select * from SHADMIN.SALES;
 commit;
+
+quit;
+/
