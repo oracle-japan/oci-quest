@@ -8,12 +8,12 @@ data "oci_objectstorage_namespace" "ns" {
 resource "oci_log_analytics_namespace" "la_namespace" {
   compartment_id = var.compartment_ocid
   is_onboarded = false
-  namespace = data.oci_obejectstorage_namespace.ns.namespace
+  namespace = data.oci_objectstorage_namespace.ns.namespace
 }
 
 resource "oci_log_analytics_log_analytics_log_group" "la_group" {
   compartment_id = var.compartment_ocid
   display_name   = format("%s-la-log-group", var.team_name)
-  namespace = data.oci_obejectstorage_namespace.ns.namespace
+  namespace = data.oci_objectstorage_namespace.ns.namespace
   description    = "Log group for la logs"
 }
