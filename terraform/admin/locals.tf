@@ -7,16 +7,6 @@ locals {
   }
 }
 
-# locals {
-#   namespace = data.oci_objectstorage_namespace.mushop_namespace.namespace
-#   mushop_media_pars = join(",", [for media in oci_objectstorage_preauthrequest.mushop_media_pars_preauth :
-#   format("https://objectstorage.%s.oraclecloud.com%s", var.region, media.access_uri)])
-#   mushop_media_pars_list = templatefile("${path.module}/scripts/mushop_media_pars_list.txt",
-#     {
-#       content = local.mushop_media_pars
-#   })
-# }
-
 locals {
   namespace = data.oci_objectstorage_namespace.mushop_namespace.namespace
 }
@@ -48,13 +38,6 @@ locals {
     }
     }
 }
-
-# locals {
-#   full_high_string = oci_database_autonomous_database.mushop_atp.connection_strings[0].high
-
-#   # 正規表現で `/` の後ろの部分（サービス名）を抽出
-#   high_service_name = regex("/(.+)$", local.full_high_string)[0]
-# }
 
 locals {
   full_high_strings = {
