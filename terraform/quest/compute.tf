@@ -6,49 +6,6 @@ data "oci_database_autonomous_database" "mushop_atp" {
   autonomous_database_id = data.oci_database_autonomous_databases.mushop_atps.autonomous_databases[0].id
 }
 
-# data "oci_objectstorage_namespace" "mushop_namespace" {
-#   compartment_id = var.compartment_ocid
-# }
-# data "oci_objectstorage_bucket_summaries" "mushop_buckets" {
-#     #Required
-#     compartment_id = var.compartment_ocid
-#     namespace = data.oci_objectstorage_namespace.mushop_namespace.namespace
-# }
-
-# data "oci_objectstorage_bucket" "mushop_bucket" {
-#   namespace = data.oci_objectstorage_namespace.mushop_namespace.namespace
-#   name      = local.matched_mushop_bucket.name
-# }
-
-# data "oci_objectstorage_bucket" "mushop_media_bucket" {
-#   namespace = data.oci_objectstorage_namespace.mushop_namespace.namespace
-#   name      = local.matched_mushop_media_bucket.name
-# }
-
-# data "oci_objectstorage_preauthrequests" "mushop_preauthenticated_requests" {
-#     #Required
-#     bucket = data.oci_objectstorage_bucket.mushop_bucket.name
-#     namespace = data.oci_objectstorage_namespace.mushop_namespace.namespace
-# }
-
-# data "oci_objectstorage_preauthrequests" "mushop_media_preauthenticated_requests" {
-#     #Required
-#     bucket = data.oci_objectstorage_bucket.mushop_media_bucket.name
-#     namespace = data.oci_objectstorage_namespace.mushop_namespace.namespace
-# }
-
-# data "oci_objectstorage_preauthrequest" "mushop_wallet_preauth" {
-#   bucket = data.oci_objectstorage_bucket.mushop_bucket.name
-#   namespace = data.oci_objectstorage_namespace.mushop_namespace.namespace
-#   par_id = local.mushop_wallet_par.id
-# }
-
-# data "oci_objectstorage_preauthrequest" "mushop_media_pars_preauth" {
-#   bucket = data.oci_objectstorage_bucket.mushop_bucket.name
-#   namespace = data.oci_objectstorage_namespace.mushop_namespace.namespace
-#   par_id = data.oci_objectstorage_preauthrequests.mushop_media_preauthenticated_requests.preauthenticated_requests[0].id
-# }
-
 data "oci_core_vcns" "all_vcns" {
   compartment_id = var.compartment_ocid
 }
