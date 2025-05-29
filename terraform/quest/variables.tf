@@ -12,9 +12,6 @@ variable "compartment_ocid" {
 }
 
 ### for OCI Quest
-variable "team_name" {
-}
-
 variable "public_key" {
 }
 

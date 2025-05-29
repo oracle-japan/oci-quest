@@ -44,11 +44,6 @@ variables:
     required: true
     description: Enter your Compartment OCID(Inherit from OCI Console)
     visible: false
-  team_name:
-    type: string
-    required: true
-    description: チーム名を入力してください。
-    pattern: ^[A-Za-z]+$
   public_key:
     type: oci:core:ssh:publickey
     required: true

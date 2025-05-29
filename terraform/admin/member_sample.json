@@ -1,19 +1,17 @@
 {
   "teams": [
     {
-      "name": "Team_Alpha",
-      "description": "Team Alpha",
+      "name": "testTeamE",
+      "description": "test Team E",
       "members": [
-        "taro.yamada@example.com",
-        "jiro.yamada@example.com"
+        "hoo@example.com"
       ]
     },
     {
-      "name": "Team_Beta",
-      "description": "Team Beta",
+      "name": "testTeamF",
+      "description": "test Team F",
       "members": [
-          "saburo.sato@example.com",
-          "shiro.sato@example.com"
+          "fuga@example.com"
       ]
     }
   ]

@@ -3,8 +3,43 @@ description: "受講者環境構築用のスタックです。"
 schemaVersion: 1.1.0
 version: "20190304"
 
+
+locale: "ja"
+
+groupings:
+  - title: "Terraform Provider Variables"
+    variables:
+      - ${region}
+      - ${tenancy_ocid}
+      - ${current_user_ocid}
+      - ${compartment_ocid}
+  - title: "OCI Quest"
+    variables:
+      - ${team_name}
+      - ${public_key}
+      - ${database_password}
+
 variables:
   # Terraform Provider Variables
   members_file:
     type: file
     description: "メンバー情報ファイル"
+  region:
+    type: oci:identity:region:name
+    required: true
+    description: Enter your region
+    visible: false
+  tenancy_ocid:
+    type: string
+    required: true
+    description: Enter your Tenancy OCID(Inherit from OCI Console)
+    visible: false
+  database_password:
+    type: password
+    required: true
+    description: >
+      パスワードは12文字以上で、少なくとも以下の条件を満たす必要があります。
+      	-	1つ以上の大文字（A-Z）
+        -	1つ以上の小文字（a-z）
+        -	1つ以上の数字（0-9）
+        -	以下の特殊文字のうち1つ以上を含む：!@#%^*_+-:?.,[]{}

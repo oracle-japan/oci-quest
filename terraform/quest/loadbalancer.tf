@@ -1,8 +1,8 @@
 resource "oci_load_balancer_load_balancer" "mushop_lb" {
   compartment_id = var.compartment_ocid
-  display_name   = format("%s-mushop-load-balancer", var.team_name)
+  display_name   = format("%s-mushop-load-balancer", data.oci_identity_compartment.team_compartment.name)
   shape          = "flexible"
-  subnet_ids     = [oci_core_subnet.mushop_lb_subnet.id]
+  subnet_ids     = [local.lb_subnet.id]
   is_private     = false
   shape_details {
     minimum_bandwidth_in_mbps = 10
@@ -10,14 +10,13 @@ resource "oci_load_balancer_load_balancer" "mushop_lb" {
   }
   /* ↓↓↓　SLからNSGの変更に伴い追加 by Masataka Marukawa ↓↓↓ */
   network_security_group_ids = [
-    oci_core_network_security_group.mushop_lb_network_security_group.id
+    local.lb_nsg.id
   ]
-  depends_on = [oci_core_network_security_group.mushop_lb_network_security_group]
   /* ↑↑↑ SLからNSGの変更に伴い追加 by Masataka Marukawa　↑↑↑ */
 }
 
 resource "oci_load_balancer_backend_set" "mushop_backend_set" {
-  name             = format("%s-mushop-backend-set", var.team_name)
+  name             = format("%s-mushop-backend-set", data.oci_identity_compartment.team_compartment.name)
   load_balancer_id = oci_load_balancer_load_balancer.mushop_lb.id
   policy           = "IP_HASH"
   health_checker {
@@ -46,7 +45,7 @@ resource "oci_load_balancer_backend" "mushop-backend" {
 resource "oci_load_balancer_listener" "mushop_listener_80" {
   load_balancer_id         = oci_load_balancer_load_balancer.mushop_lb.id
   default_backend_set_name = oci_load_balancer_backend_set.mushop_backend_set.name
-  name                     = format("%s-mushop-80", var.team_name)
+  name                     = format("%s-mushop-80", data.oci_identity_compartment.team_compartment.name)
   port                     = 80
   protocol                 = "HTTP"
 
@@ -58,7 +57,7 @@ resource "oci_load_balancer_listener" "mushop_listener_80" {
 resource "oci_load_balancer_listener" "mushop_listener_443" {
   load_balancer_id         = oci_load_balancer_load_balancer.mushop_lb.id
   default_backend_set_name = oci_load_balancer_backend_set.mushop_backend_set.name
-  name                     = format("%s-mushop-443", var.team_name)
+  name                     = format("%s-mushop-443", data.oci_identity_compartment.team_compartment.name)
   port                     = 443
   protocol                 = "HTTP"
 
