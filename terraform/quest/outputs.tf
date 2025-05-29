@@ -9,3 +9,8 @@ output "bastion_ip" {
 output "app_private_ip" {
   value = oci_core_instance.mushop_app_instance.private_ip
 }
+
+output "mushop_namespace" {
+  value = data.oci_objectstorage_namespace.mushop_namespace.namespace
+}
+

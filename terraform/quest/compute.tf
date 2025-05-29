@@ -1,3 +1,70 @@
+data "oci_database_autonomous_databases" "mushop_atps" {
+  compartment_id = var.compartment_ocid
+}
+
+data "oci_database_autonomous_database" "mushop_atp" {
+  autonomous_database_id = data.oci_database_autonomous_databases.mushop_atps.autonomous_databases[0].id
+}
+
+# data "oci_objectstorage_namespace" "mushop_namespace" {
+#   compartment_id = var.compartment_ocid
+# }
+# data "oci_objectstorage_bucket_summaries" "mushop_buckets" {
+#     #Required
+#     compartment_id = var.compartment_ocid
+#     namespace = data.oci_objectstorage_namespace.mushop_namespace.namespace
+# }
+
+# data "oci_objectstorage_bucket" "mushop_bucket" {
+#   namespace = data.oci_objectstorage_namespace.mushop_namespace.namespace
+#   name      = local.matched_mushop_bucket.name
+# }
+
+# data "oci_objectstorage_bucket" "mushop_media_bucket" {
+#   namespace = data.oci_objectstorage_namespace.mushop_namespace.namespace
+#   name      = local.matched_mushop_media_bucket.name
+# }
+
+# data "oci_objectstorage_preauthrequests" "mushop_preauthenticated_requests" {
+#     #Required
+#     bucket = data.oci_objectstorage_bucket.mushop_bucket.name
+#     namespace = data.oci_objectstorage_namespace.mushop_namespace.namespace
+# }
+
+# data "oci_objectstorage_preauthrequests" "mushop_media_preauthenticated_requests" {
+#     #Required
+#     bucket = data.oci_objectstorage_bucket.mushop_media_bucket.name
+#     namespace = data.oci_objectstorage_namespace.mushop_namespace.namespace
+# }
+
+# data "oci_objectstorage_preauthrequest" "mushop_wallet_preauth" {
+#   bucket = data.oci_objectstorage_bucket.mushop_bucket.name
+#   namespace = data.oci_objectstorage_namespace.mushop_namespace.namespace
+#   par_id = local.mushop_wallet_par.id
+# }
+
+# data "oci_objectstorage_preauthrequest" "mushop_media_pars_preauth" {
+#   bucket = data.oci_objectstorage_bucket.mushop_bucket.name
+#   namespace = data.oci_objectstorage_namespace.mushop_namespace.namespace
+#   par_id = data.oci_objectstorage_preauthrequests.mushop_media_preauthenticated_requests.preauthenticated_requests[0].id
+# }
+
+data "oci_core_vcns" "all_vcns" {
+  compartment_id = var.compartment_ocid
+}
+
+data "oci_core_subnets" "all_subnets" {
+  compartment_id = var.compartment_ocid
+  vcn_id         = local.vcn_id
+}
+
+data "oci_core_network_security_groups" "all_nsgs" {
+  compartment_id = var.compartment_ocid
+  vcn_id         = local.vcn_id
+}
+
+
+
 locals {
   ad              = data.oci_identity_availability_domain.ad.name
   shape           = "VM.Standard.E5.Flex"
@@ -10,7 +77,7 @@ locals {
   deploy_template = templatefile("${path.module}/scripts/deploy.template.sh",
     {
       oracle_client_version   = "19.10"
-      db_name                 = oci_database_autonomous_database.mushop_atp.db_name
+      db_name                 = data.oci_database_autonomous_database.mushop_atp.db_name
       atp_pw                  = var.database_password
       mushop_media_visibility = true
       wallet_par              = "https://objectstorage.${var.region}.oraclecloud.com${oci_objectstorage_preauthrequest.mushop_wallet_preauth.access_uri}"
@@ -40,8 +107,8 @@ locals {
       catalogue_port                 = 3005
       catalogue_architecture         = "amd64"
       mock_mode                      = "carts,orders,users"
-      db_name                        = oci_database_autonomous_database.mushop_atp.db_name
-      assets_url                     = "https://objectstorage.${var.region}.oraclecloud.com/n/${oci_objectstorage_bucket.mushop_media.namespace}/b/${oci_objectstorage_bucket.mushop_media.name}/o/"
+      db_name                        = data.oci_database_autonomous_database.mushop_atp.db_name
+      assets_url                     = "https://objectstorage.${var.region}.oraclecloud.com/n/${data.oci_objectstorage_bucket.mushop_media_bucket.namespace}/b/${data.oci_objectstorage_bucket.mushop_media_bucket.name}/o/"
       public_key = tls_private_key.bastion_ssh_key.public_key_openssh
   })
 }
@@ -71,10 +138,14 @@ data "cloudinit_config" "mushop" {
   }
 }
 
+data "oci_identity_compartment" "team_compartment" {
+  id = var.compartment_ocid
+}
+
 resource "oci_core_instance" "mushop_bastion" {
   availability_domain = local.ad
   compartment_id      = var.compartment_ocid
-  display_name        = format("%s-mushop-bastion", var.team_name)
+  display_name        = format("%s-mushop-bastion", data.oci_identity_compartment.team_compartment.name)
   shape               = local.shape
   shape_config {
     ocpus         = 1
@@ -85,13 +156,13 @@ resource "oci_core_instance" "mushop_bastion" {
     source_id   = local.image
   }
   create_vnic_details {
-    subnet_id        = oci_core_subnet.mushop_lb_subnet.id
+    subnet_id        = local.lb_subnet.id
     display_name     = "primaryvnic"
     assign_public_ip = true
-    hostname_label   = format("%s-mushop-bastion", var.team_name)
+    hostname_label   = format("%s-mushop-bastion", data.oci_identity_compartment.team_compartment.name)
     /* ↓↓↓　SLからNSGの変更に伴い追加 by Masataka Marukawa ↓↓↓ */
     nsg_ids = [
-      oci_core_network_security_group.mushop_bastion_network_security_group.id
+      local.bastion_nsg.id
     ]
     /* ↑↑↑ SLからNSGの変更に伴い追加 by Masataka Marukawa　↑↑↑ */
   }
@@ -114,7 +185,7 @@ resource "oci_core_instance" "mushop_bastion" {
 resource "oci_core_instance" "mushop_app_instance" {
   availability_domain = local.ad
   compartment_id      = var.compartment_ocid
-  display_name        = format("%s-mushop-app", var.team_name)
+  display_name        = format("%s-mushop-app", data.oci_identity_compartment.team_compartment.name)
   shape               = local.shape
   shape_config {
     ocpus         = 1
@@ -125,13 +196,13 @@ resource "oci_core_instance" "mushop_app_instance" {
     source_id   = local.image
   }
   create_vnic_details {
-    subnet_id        = oci_core_subnet.mushop_app_subnet.id
+    subnet_id        = local.app_subnet.id
     display_name     = "primaryvnic"
     assign_public_ip = false
-    hostname_label   = format("%s-mushop-app", var.team_name)
+    hostname_label   = format("%s-mushop-app", data.oci_identity_compartment.team_compartment.name)
     /* ↓↓↓　SLからNSGの変更に伴い追加 by Masataka Marukawa ↓↓↓ */
     nsg_ids = [
-      oci_core_network_security_group.mushop_app_network_security_group.id
+      local.app_nsg.id
     ]
     /* ↑↑↑ SLからNSGの変更に伴い追加 by Masataka Marukawa　↑↑↑ */
   }

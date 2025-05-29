@@ -1,39 +1,37 @@
-locals {
-  full_high_string = oci_database_autonomous_database.mushop_atp.connection_strings[0].high
-
-  # 正規表現で `/` の後ろの部分（サービス名）を抽出
-  high_service_name = regex("/(.+)$", local.full_high_string)[0]
-}
-
-
 resource "oci_database_autonomous_database" "mushop_atp" {
-  compartment_id          = var.compartment_ocid
-  display_name            = format("%s-mushop-db", var.team_name)
-  db_name                 = format("%spdb", var.team_name)
+  for_each = local.team_compartment_ocids
+
+  compartment_id          = each.value
+  display_name            = format("%s-mushop-db", each.key)
+  db_name                 = format("%spdb", each.key)
   db_version              = "19c"
   db_workload             = "OLTP"
   compute_count           = 2
   compute_model           = "ECPU"
   data_storage_size_in_gb = 150
   admin_password          = var.database_password
-  subnet_id               = oci_core_subnet.mushop_db_subnet.id
+  subnet_id               = oci_core_subnet.mushop_db_subnet[each.key].id
   /* ↓↓↓　SLからNSGの変更に伴い追加 by Masataka Marukawa ↓↓↓ */  
   nsg_ids = [
-    oci_core_network_security_group.mushop_db_network_security_group.id
+    oci_core_network_security_group.mushop_db_network_security_group[each.key].id
   ]
   /* ↑↑↑ SLからNSGの変更に伴い追加 by Masataka Marukawa　↑↑↑ */
 }
 
 resource "oci_database_autonomous_database_wallet" "mushop_wallet" {
-  autonomous_database_id = oci_database_autonomous_database.mushop_atp.id
+  for_each = local.team_compartment_ocids
+
+  autonomous_database_id = oci_database_autonomous_database.mushop_atp[each.key].id
   password               = var.database_password
   generate_type          = "SINGLE"
   base64_encode_content  = true
 }
 
 resource "oci_database_management_autonomous_database_autonomous_database_dbm_features_management" "mushop_dbm" {
+  for_each = local.team_compartment_ocids
+
   #Required
-  autonomous_database_id                 = oci_database_autonomous_database.mushop_atp.id
+  autonomous_database_id                 = oci_database_autonomous_database.mushop_atp[each.key].id
   enable_autonomous_database_dbm_feature = true
 
   #Optional
@@ -60,7 +58,7 @@ resource "oci_database_management_autonomous_database_autonomous_database_dbm_fe
         connection_type = "BASIC"
         port            = "1521"
         protocol        = "TCPS"
-        service = local.high_service_name
+        service = local.high_service_names[each.key]
 
       }
     }
@@ -68,16 +66,18 @@ resource "oci_database_management_autonomous_database_autonomous_database_dbm_fe
 
       #Optional
       connector_type       = "PE"
-      private_end_point_id = oci_database_management_db_management_private_endpoint.mushop_dbm_private_endpoint.id
+      private_end_point_id = oci_database_management_db_management_private_endpoint.mushop_dbm_private_endpoint[each.key].id
     }
   }
 }
 
 resource "oci_database_management_db_management_private_endpoint" "mushop_dbm_private_endpoint" {
+  for_each = local.team_compartment_ocids
+
   #Required
-  compartment_id = var.compartment_ocid
+  compartment_id = each.value
   name           = "dbm_private_endpoint"
-  subnet_id      = oci_core_subnet.mushop_db_subnet.id
+  subnet_id      = oci_core_subnet.mushop_db_subnet[each.key].id
 }
 
 

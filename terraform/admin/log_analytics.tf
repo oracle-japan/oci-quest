@@ -12,8 +12,10 @@ data "oci_objectstorage_namespace" "ns" {
 # }
 
 resource "oci_log_analytics_log_analytics_log_group" "la_group" {
-  compartment_id = var.compartment_ocid
-  display_name   = format("%s-la-log-group", var.team_name)
+  for_each = local.team_compartment_ocids
+
+  compartment_id = each.value
+  display_name   = format("%s-la-log-group", each.key)
   namespace = data.oci_objectstorage_namespace.ns.namespace
   description    = "Log group for la logs"
 }
