@@ -1,7 +1,0 @@
-region = "ap-tokyo-1"
-tenancy_ocid = "ocid1.tenancy.oc1..aaaaaaaaataul433yuanhzular62opj6y4kc7b4mvoro5wcvoys5mkjvyu5q"
-current_user_ocid = "ocid1.user.oc1..aaaaaaaavzebl4r5pyfudbmkf5yswcr2tpiifg4oifw4o2x6xy24djhw3aka"
-compartment_ocid = "ocid1.compartment.oc1..aaaaaaaamvbfyj6wm2gusxmzmcz7fzj6yk5pamtevfrpdak2n3ebkbqd3nbq"
-public_key = "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBPqJc6rvNLjiBJn8yjH/JxSV3osolhsTrPTfS2A1dZnafwgSGF5osH8qY6ndze29OTXqq9GQ61IYyrKGt2wC+QI= shukawam@shukawam-mac"
-database_password = "Welcome12345##"
-database_password_secret_id = "ocid1.vaultsecret.oc1.ap-tokyo-1.amaaaaaao3tm64yatfl4mpiujx3r7kzc7dfjq7d6k7tdjxob3alm7hamxsva"
