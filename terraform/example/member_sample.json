@@ -1,0 +1,67 @@
+{
+  "teams": [
+    {
+      "name": "TeamA",
+      "description": "TeamA",
+      "members": [
+        "aaa@example.com",
+        "bbb@example.com",
+        "ccc@example.com"
+      ]
+    },
+    {
+      "name": "TeamB",
+      "description": "TeamB",
+      "members": [
+          "ddd@example.com",
+          "eee@example.com",
+          "fff@example.com"
+      ]
+    },
+    {
+      "name": "TeamC",
+      "description": "TeamC",
+      "members": [
+        "ggg@example.com",
+        "hhh@example.com",
+        "iii@example.com"
+      ]
+    },
+    {
+      "name": "TeamD",
+      "description": "TeamD",
+      "members": [
+        "jjj@example.com",
+        "kkk@example.com",
+        "lll@example.com"
+      ]
+    },
+    {
+      "name": "TeamE",
+      "description": "TeamE",
+      "members": [
+        "mmm@example.com",
+        "nnn@example.com",
+        "ooo@example.com"
+      ]
+    },
+    {
+      "name": "TeamF",
+      "description": "TeamF",
+      "members": [
+        "ppp@example.com",
+        "qqq@example.com",
+        "rrr@example.com"
+      ]
+    },
+    {
+      "name": "TeamG",
+      "description": "TeamG",
+      "members": [
+        "sss@example.com",
+        "ttt@example.com",
+        "uuu@example.com"
+      ]
+    }
+  ]
+}

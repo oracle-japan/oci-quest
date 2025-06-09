@@ -49,8 +49,8 @@ base64 --decode /root/wallet.64 > /root/wallet.zip
 unzip -o /root/wallet.zip -d /usr/lib/oracle/${oracle_client_version}/client64/lib/network/admin/
 
 # Init DB
-sqlplus ADMIN/"${atp_pw}"@${db_name}_tp @/root/catalogue.sql
-sqlplus ADMIN/"${atp_pw}"@${db_name}_tp @/root/sql_performance.sql 
+# sqlplus ADMIN/"${atp_pw}"@${db_name}_tp @/root/catalogue.sql
+# sqlplus ADMIN/"${atp_pw}"@${db_name}_tp @/root/sql_performance.sql 
 
 # Get binaries
 curl -o /root/mushop-basic.tar.xz.zip -OL https://github.com/oracle-japan/oci-quest/releases/download/${version}/mushop-basic.tar.xz

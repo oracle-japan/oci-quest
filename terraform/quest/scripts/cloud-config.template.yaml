@@ -20,16 +20,6 @@ write_files:
     encoding: "gzip+base64"
     content: |
       ${deploy_template_content}
-  - path: "/root/catalogue.sql"
-    permissions: "0777"
-    encoding: "gzip+base64"
-    content: |
-      ${catalogue_sql_template_content}
-  - path: "/root/sql_performance.sql"
-    permissions: "0777"
-    encoding: "gzip+base64"
-    content: |
-      ${sql_performance_content}
   - path: "/etc/httpd/conf/httpd.conf"
     permissions: "0777"
     encoding: "gzip+base64"

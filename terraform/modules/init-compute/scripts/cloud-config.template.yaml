@@ -1,0 +1,33 @@
+#cloud-config
+
+ssh_authorized_keys:
+  - ${public_key}
+
+write_files:
+# setup script
+  - path: "/root/init_db.sh"
+    permissions: "0777"
+    encoding: "gzip+base64"
+    content: |
+      ${init_db_sh_content}
+  - path: "/root/sql_performance.sql"
+    permissions: "0777"
+    encoding: "gzip+base64"
+    content: |
+      ${sql_performance_content}
+  - path: "/root/catalogue.sql"
+    permissions: "0777"
+    encoding: "gzip+base64"
+    content: |
+      ${catalogue_sql_template_content}
+
+
+runcmd:
+ - echo "CRLF to LF conversion..."  
+ - sed -i 's/\r//g; s/^M//g' /root/*.sh 
+ - echo "Running initializing DB scripts..."
+ - /root/init_db.sh
+ - echo "Finished initializing DB scripts."
+
+final_message: "The system is finally up, after $UPTIME seconds"
+output: {all: '| tee -a /root/cloud-init-output.log'}
