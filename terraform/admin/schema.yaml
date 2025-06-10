@@ -24,6 +24,13 @@ variables:
   members_file:
     type: file
     description: "メンバー情報ファイル"
+  public_key:
+    type: file
+    required: true
+    description: >
+      SSH公開鍵を入力してください。
+      例: ~/.ssh/id_rsa.pub
+      この鍵は、DB初期化インスタンスのSSH接続に使用されます。
   region:
     type: oci:identity:region:name
     required: true
