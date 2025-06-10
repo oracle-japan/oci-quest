@@ -1,26 +1,31 @@
-### Terraform OCI Provider
-variable "region" {
+variable "members_file" {
+  description = "Path to the file containing the members to be created in the identity module."
+  type        = string
 }
 
 variable "tenancy_ocid" {
+  description = "The OCID of the tenancy."
+  type        = string
 }
 
-variable "members_file" {
-  type = string
-  description = "Base64 encoded JSON string"
+
+variable "region" {
 }
 
-variable "compartment_ocid" {
-}
-
-variable "admin_user_ocids" {
-  description = "開発メンバーのOCID"
-  type = list(string)
-}
-
-variable "database_password" {
+variable "current_user_ocid" {
 }
 
 variable "database_password_secret_id" {
+  description = "Secret ID for the database password"
+  type        = string
 }
 
+variable "database_password" {
+  description = "Password for the Autonomous Database"
+  type        = string
+}
+
+variable "public_key" {
+  description = "Public key for the OCI Quest"
+  type        = string
+}

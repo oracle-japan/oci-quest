@@ -43,3 +43,14 @@ variables:
         -	1つ以上の小文字（a-z）
         -	1つ以上の数字（0-9）
         -	以下の特殊文字のうち1つ以上を含む：!@#%^*_+-:?.,[]{}
+  database_secret_id:
+    type: string
+    required: true
+    description: >
+      データベースのパスワードを格納するシークレットのOCIDを入力してください。
+      シークレットは、Oracle Cloud Infrastructure Vaultで作成されている必要があります。
+  current_user_ocid:  
+    type: string
+    required: true
+    description: Enter your User OCID(Inherit from OCI Console)
+    visible: false
