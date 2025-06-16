@@ -1,8 +1,8 @@
 {
   "teams": [
     {
-      "name": "TeamA",
-      "description": "TeamA",
+      "name": "TeamC",
+      "description": "TeamC",
       "members": [
         "aaa@example.com",
         "bbb@example.com",
@@ -10,8 +10,8 @@
       ]
     },
     {
-      "name": "TeamB",
-      "description": "TeamB",
+      "name": "TeamD",
+      "description": "TeamD",
       "members": [
           "ddd@example.com",
           "eee@example.com",
