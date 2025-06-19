@@ -28,9 +28,9 @@ resource "oci_database_autonomous_database" "mushop_atp" {
   whitelisted_ips = [
     "0.0.0.0/0",
   ]
-  nsg_ids = [
-    var.nsg_ocid
-  ]
+  # nsg_ids = [
+  #   var.nsg_ocid
+  # ]
 }
 
 resource "oci_database_autonomous_database_wallet" "mushop_wallet" {
