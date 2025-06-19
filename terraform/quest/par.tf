@@ -60,7 +60,7 @@ resource "oci_objectstorage_preauthrequest" "mushop_media_pars_list_preauth" {
   name         = format("%s-mushop_media_pars_list_preauth", local.compartment_name)
   namespace    = local.namespace
   time_expires = timeadd(timestamp(), "72h")
-  object_name  = oci_objectstorage_object.mushop_media_pars_list.object
+  object_name  = "mushop_media_pars_list.txt" #oci_objectstorage_object.mushop_media_pars_list.object
 }
 
 resource "oci_objectstorage_preauthrequest" "mushop_media_pars_preauth" {
