@@ -13,4 +13,3 @@ output "app_private_ip" {
 output "mushop_namespace" {
   value = data.oci_objectstorage_namespace.mushop_namespace.namespace
 }
-

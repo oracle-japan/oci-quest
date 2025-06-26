@@ -1,11 +1,11 @@
 
-module "identity" {
-  source = "../modules/identity"
+# module "identity" {
+#   source = "../modules/identity"
 
-  tenancy_ocid = var.tenancy_ocid
-  members_file = var.members_file
+#   tenancy_ocid = var.tenancy_ocid
+#   members_file = var.members_file
 
-}
+# }
 
 module "vcn" {
   source = "../modules/vcn"
