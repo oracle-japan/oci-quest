@@ -115,18 +115,18 @@ resource "oci_identity_compartment" "teams" {
 # }
 
 
-# # コンパートメント作成直後にはポリシーを作成できないので、待つ必要がある
-# resource "null_resource" "wait_for_compartments" {
-#   triggers = {
-#     always_run = timestamp()
-#   }
+# コンパートメント作成直後にはポリシーを作成できないので、待つ必要がある
+resource "null_resource" "wait_for_compartments" {
+  triggers = {
+    always_run = timestamp()
+  }
 
-#   provisioner "local-exec" {
-#     command = "sleep 60"  # 60秒待機
-#   }
+  provisioner "local-exec" {
+    command = "sleep 60"  # 60秒待機
+  }
 
-#   depends_on = [
-#     oci_identity_compartment.teams,
-#     #oci_identity_compartment.admin_dev
-#   ]
-# }
+  depends_on = [
+    oci_identity_compartment.teams,
+    #oci_identity_compartment.admin_dev
+  ]
+}
