@@ -22,22 +22,22 @@ resource "oci_identity_compartment" "teams" {
 #     enable_delete = true
 # }
 
-# resource "oci_identity_user" "users" {
-#   for_each = local.member_map
+resource "oci_identity_user" "users" {
+  for_each = local.member_map
 
-#   name           = each.key
-#   email          = each.value.email
-#   description    = "${each.value.team_name} - ${each.key}"
-#   compartment_id = var.tenancy_ocid
-# }
+  name           = each.key
+  email          = each.value.email
+  description    = "${each.value.team_name} - ${each.key}"
+  compartment_id = var.tenancy_ocid
+}
 
-# resource "oci_identity_group" "teams" {
-#   for_each = local.team_map
+resource "oci_identity_group" "teams" {
+  for_each = local.team_map
 
-#   name        = each.key
-#   description = "Group for ${each.key}"
-#   compartment_id = var.tenancy_ocid
-# }
+  name        = each.key
+  description = "Group for ${each.key}"
+  compartment_id = var.tenancy_ocid
+}
 
 # # resource "oci_identity_group" "admin_dev" {
 # #   name = "admin_dev"
@@ -45,11 +45,11 @@ resource "oci_identity_compartment" "teams" {
 # #   compartment_id = var.tenancy_ocid
 # # }
 
-# resource "oci_identity_user_group_membership" "test_user_group_membership" {
-#   for_each = local.member_map
-#   user_id = oci_identity_user.users[each.key].id
-#   group_id = oci_identity_group.teams[each.value.team_name].id
-# }
+resource "oci_identity_user_group_membership" "test_user_group_membership" {
+  for_each = local.member_map
+  user_id = oci_identity_user.users[each.key].id
+  group_id = oci_identity_group.teams[each.value.team_name].id
+}
 
 # # resource "oci_identity_user_group_membership" "admin_dev_membership" {
 # #   for_each = { for id in var.admin_user_ocids : id => id }
