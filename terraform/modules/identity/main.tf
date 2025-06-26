@@ -59,23 +59,23 @@ resource "oci_identity_compartment" "teams" {
 # # }
 
 
-# resource "oci_identity_policy" "team_access" {
-#   for_each = local.team_map
+resource "oci_identity_policy" "team_access" {
+  for_each = local.team_map
 
-#   name           = "policy_${each.key}" 
-#   description    = "Allow ${each.key} group to manage all-resources in compartment ${each.key}"
-#   compartment_id = var.tenancy_ocid  
+  name           = "policy_${each.key}" 
+  description    = "Allow ${each.key} group to manage all-resources in compartment ${each.key}"
+  compartment_id = var.tenancy_ocid  
 
-#   statements = [
-#     "Allow group ${each.key} to manage all-resources in compartment ${each.key}",
-#     "Allow group ${each.key} to manage loganalytics-features-family in tenancy",
-#     "Allow group ${each.key} to manage loganalytics-resources-family in tenancy",
-#     "Allow group ${each.key} to use cloud-shell in tenancy",
-#     "Allow group ${each.key} to use secret-family in tenancy"
-#   ]
+  statements = [
+    "Allow group ${each.key} to manage all-resources in compartment ${each.key}",
+    "Allow group ${each.key} to manage loganalytics-features-family in tenancy",
+    "Allow group ${each.key} to manage loganalytics-resources-family in tenancy",
+    "Allow group ${each.key} to use cloud-shell in tenancy",
+    "Allow group ${each.key} to use secret-family in tenancy"
+  ]
 
-#   depends_on = [null_resource.wait_for_compartments]
-# }
+  depends_on = [null_resource.wait_for_compartments]
+}
 
 # # resource "oci_identity_policy" "admin_dev_access" {
 # #   name           = "admin_dev_access_policy"
@@ -96,23 +96,23 @@ resource "oci_identity_compartment" "teams" {
 # #   depends_on = [null_resource.wait_for_compartments]
 # # }
 
-# resource "oci_identity_policy" "common_policy" {
-#   name           = "common_policy"
-#   compartment_id = var.tenancy_ocid
-#   description = "共通のポリシー"
-#   statements = [
-#     "Allow service dpd to manage objects in compartment id ${var.tenancy_ocid}",
-#     "Allow service dpd to read secret-family in compartment id ${var.tenancy_ocid}",
-#     "Allow service dpd to use vaults in compartment id ${var.tenancy_ocid}",
-#     "Allow service dpd to use keys in compartment id ${var.tenancy_ocid}",
-#     "Allow service loganalytics to read loganalytics-features-family in tenancy",
-#     "Allow service loganalytics to {LOG_ANALYTICS_LIFECYCLE_INSPECT, LOG_ANALYTICS_LIFECYCLE_READ} in tenancy",
-#     "Allow service loganalytics to MANAGE cloud-events-rule in tenancy",
-#     "Allow service loganalytics to READ compartments in tenancy"
-#   ]
+resource "oci_identity_policy" "common_policy" {
+  name           = "common_policy"
+  compartment_id = var.tenancy_ocid
+  description = "共通のポリシー"
+  statements = [
+    "Allow service dpd to manage objects in compartment id ${var.tenancy_ocid}",
+    "Allow service dpd to read secret-family in compartment id ${var.tenancy_ocid}",
+    "Allow service dpd to use vaults in compartment id ${var.tenancy_ocid}",
+    "Allow service dpd to use keys in compartment id ${var.tenancy_ocid}",
+    "Allow service loganalytics to read loganalytics-features-family in tenancy",
+    "Allow service loganalytics to {LOG_ANALYTICS_LIFECYCLE_INSPECT, LOG_ANALYTICS_LIFECYCLE_READ} in tenancy",
+    "Allow service loganalytics to MANAGE cloud-events-rule in tenancy",
+    "Allow service loganalytics to READ compartments in tenancy"
+  ]
 
-#   depends_on = [null_resource.wait_for_compartments]
-# }
+  depends_on = [null_resource.wait_for_compartments]
+}
 
 
 # コンパートメント作成直後にはポリシーを作成できないので、待つ必要がある
