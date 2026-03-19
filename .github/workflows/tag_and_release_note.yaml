@@ -22,10 +22,11 @@ jobs:
           git push origin ${{ env.VERSION }}
 
       - name: Get artifact
-        run: |
-          wget \
-            -O /tmp/mushop-basic.tar.xz \
-            https://nightly.link/oracle-japan/oci-quest/workflows/build.yaml/main/mushop-basic.tar.xz.zip
+        uses: actions/download-artifact@v4
+        with:
+          name: mushop-basic.tar.xz
+          path: /tmp
+
       - name: Generate release note
         run: |
           echo RELEASE_ID=$(curl -L \
